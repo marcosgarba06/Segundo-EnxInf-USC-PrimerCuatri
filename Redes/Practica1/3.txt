@@ -1,0 +1,36 @@
+ 1. dig www.youtube.com A +short
+142.250.184.14
+142.250.185.14
+142.250.200.110
+142.250.200.142
+172.217.17.14
+172.217.168.174
+142.250.184.174
+142.250.200.78
+142.250.201.78
+216.58.215.142
+216.58.215.174
+
+2. dig -x 142.250.200.227 +short
+
+mad41s10-in-f14.1e100.net.
+
+3. dig www.youtube.es AAAA +short
+youtube-ui.l.google.com.
+2a00:1450:4003:801::200e
+2a00:1450:4003:80c::200e
+2a00:1450:4003:80d:
+
+4. dig -x 2a00:1450:4003:80a::200e +short
+mad07s10-in-x0e.1e100.net.
+
+5. dig usc.es NS +short
+secus.usc.es.
+sun.rediris.es.
+dns2.usc.es.
+chico.rediris.es.
+
+dig dns2.usc.es. A +short con todas
+
+6. dig google.com MX +short
+10 smtp.google.com.

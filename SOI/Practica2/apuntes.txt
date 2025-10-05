@@ -1,0 +1,6 @@
+La caja de los proceos se puede ver en el sistema usando cd /proc y ls y los numeros son los pids de los procesos y dentro de cada directorio esta la informacion de los
+procesos. Pueden haber directorios para los que haga falta ser superusuario.
+
+Fijarse en el fichero maps usando more maps. Informacion escasa y muy criptica. Hay un trozo reservado para heap (o mas de uno) y uno reservado para el stack
+
+
