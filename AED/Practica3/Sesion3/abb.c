@@ -1,6 +1,7 @@
 #include "abb.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 ///////////////////////// ESTRUCTURAS DE DATOS
 
@@ -25,9 +26,11 @@ TIPOCLAVE _clave_elem(TIPOELEMENTOABB *E) {
  * comparaciones del resto de la biblioteca y en su lugar
  * cambiando solo esta. */
 int _comparar_claves(TIPOCLAVE cl1, TIPOCLAVE cl2) {
-    return cl1==cl2 ? 0 : cl1>cl2 ? 1 : -1;
+    //return cl1==cl2 ? 0 : cl1>cl2 ? 1 : -1;
+    return (strcmp(cl1, cl2) == 0) ? 0 : (strcmp(cl1, cl2) > 0) ? 1 : -1;
     //        if           else if       else
-} //return strcmp(cl1,cl2);, 0 si iguales, >0 si cl1>cl2, <0 si cl1<cl2
+} 
+//return strcmp(cl1,cl2);, 0 si iguales, >0 si cl1>cl2, <0 si cl1<cl2
 //hay que traducir las preguntas del return y traducirlas
 //cl1==cl2 -> strcmp(cl1,cl2)==0
 //cl1>cl2 -> strcmp(cl1,cl2)>0
@@ -38,7 +41,10 @@ int _comparar_claves(TIPOCLAVE cl1, TIPOCLAVE cl2) {
  * destruirse ha de hacerse aqui. El uso de esta funcion
  * permite hacer mas eficiente la destruccion del arbol.*/
 void _destruir_elem(TIPOELEMENTOABB *E) {
-    
+    destruirLista(&E->parents);
+    destruirLista(&E->siblings);
+    destruirLista(&E->killed);
+    destruirLista(&E->marriedEngaged);
 }
 
 /////////////////////////// FIN PARTE MODIFICABLE

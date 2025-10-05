@@ -95,11 +95,11 @@ void anadirPersonaje(TABB *arbol) {
 
         insertarElementoAbb(arbol, nodo);
 
-         // Destruir las listas para liberar memoria
+        /*// Destruir las listas para liberar memoria
         destruirLista(&nodo.parents);
         destruirLista(&nodo.siblings);
         destruirLista(&nodo.killed);
-        destruirLista(&nodo.marriedEngaged);
+        destruirLista(&nodo.marriedEngaged);*/
 
         printf("Personaje '%s' anadido correctamente al arbol.\n", nodo.name);
         
