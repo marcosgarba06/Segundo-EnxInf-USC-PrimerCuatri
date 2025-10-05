@@ -69,11 +69,11 @@ void anadirPersonaje(TABB *arbol) {
             break; // Salir del bucle si el usuario ingresa "fin"
         }
 
-        printf("Tipo de personaje: ");
+        printf("Tipo de personaje (- en caso de desconocer): ");
         scanf(" %[^\n\r]", nodo.character_type);
         printf("\n");
        
-        printf("Casa del personaje: ");
+        printf("Casa del personaje (- en caso de desconocer): ");
         scanf(" %[^\n\r]", nodo.house);
         printf("\n");
         
@@ -83,7 +83,7 @@ void anadirPersonaje(TABB *arbol) {
         getchar(); // Limpiar el buffer de entrada
         printf("\n");
 
-        printf("Descripcion del personaje: ");
+        printf("Descripcion del personaje (- en caso de desconocer): ");
         scanf(" %[^\n\r]", nodo.description);
         printf("\n");
 
@@ -107,4 +107,90 @@ void anadirPersonaje(TABB *arbol) {
     
     printf("Finalizando anadir personaje...\n");
 
+}
+
+void _imprimirLista(TLISTA lista){
+    TPOSICION posActual, posFinal;
+    TIPOELEMENTOLISTA elemento;
+    int primero = 1;  // Variable flag para el primer elemento y no dejar una "," al final
+
+    posFinal = finLista(lista);
+
+    for(posActual = primeroLista(lista); posActual != posFinal; posActual = siguienteLista(lista, posActual)){
+        recuperarElementoLista(lista, posActual, &elemento);
+        if (!primero) {
+            printf(",");
+        }
+        printf(" %s", elemento.name);
+        primero = 0;
+    }
+}
+
+void _imprimirPersonaje(TIPOELEMENTOABB personaje){
+    printf("Nombre: %s\n", personaje.name);
+    printf("Tipo: %s\n", personaje.character_type);
+    printf("Casa: %s\n", personaje.house);
+    printf("Familia real: %s\n", personaje.real ? "Si" : "No");
+
+    //Lista de padres
+    printf("Padres:");
+
+    if (esListaVacia(personaje.parents)) {
+        printf(" -\n");
+    } else {
+        _imprimirLista(personaje.parents);
+        printf("\n");
+    }
+    
+    /* Imprimir listas en cada caso comprobar que la lista no sea vacia, si lo es se imprime "-" 
+    ya que es lo que indica que es un campo desconocido, si tienen elementos se imprime la lista
+    con la funcion _imprimirLista creada anteiormente*/
+    
+    //Lista de hermanos
+    printf("Hermanos:");
+
+    if (esListaVacia(personaje.siblings)) {
+        printf(" -\n");
+    } else {
+        _imprimirLista(personaje.siblings);
+        printf("\n");
+    }
+
+    //Lista de personas que ha asesinado
+    printf("Personas que ha asesinado:");
+    if (esListaVacia(personaje.killed)) {
+        printf(" -\n");
+    } else {
+        _imprimirLista(personaje.killed);
+        printf("\n");
+    }
+
+    //Lista de personas que ha sido pareja
+    printf("Personas que ha sido pareja:");
+    if (esListaVacia(personaje.marriedEngaged)) {
+        printf(" -\n");
+    } else {
+        _imprimirLista(personaje.marriedEngaged);
+        printf("\n");
+    }
+
+    printf("Descripcion: %s\n", personaje.description);
+}
+
+
+void listadoPersonajes(TABB arbol){
+    TIPOELEMENTOABB elemen;
+    if (esAbbVacio(arbol)) { //Comprobar que no es vacio el arbol
+        printf("El arbol esta vacio, no hay personajes que mostrar.\n");
+        return;
+    }else{
+        //Usando recorrido InOrden (IRD)
+        listadoPersonajes(izqAbb(arbol)); //Primero subarbol izquierdo recirsivamente
+        
+        leerElementoAbb(arbol, &elemen); //Elemento actual
+        _imprimirPersonaje(elemen); 
+        printf("\n");
+
+        listadoPersonajes(derAbb(arbol)); //luego subarbol derecho
+    }
 }
