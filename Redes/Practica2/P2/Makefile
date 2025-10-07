@@ -16,7 +16,7 @@ HEADER_FILES_DIR = .
 INCLUDES = -I $(HEADER_FILES_DIR)
 
 #ficheros .h.  Si hay varios, se precede cada uno con $(HEADER_FILES_DIR)/
-HEADERS = $(HEADER_FILES_DIR)/sort.h
+HEADERS = $(HEADER_FILES_DIR)
 
 #FUENTES: todos los archivos .c necesarios
 SRCS = servidormay.c clientemay.c
@@ -31,14 +31,12 @@ OBJSCLIENT = $(SRCSCLIENT:.c=.o)
 #REGLA 1: genera el ejecutable, dependencia de los .o 
 #si no hay librerias adicionales, no existen la variable $(LIBS),
 #por lo que se elimina $(LIBS) de la regla siguiente
-servidor: $(OBJS)
+all: servidor cliente
+
+servidor: $(OBJSSERVER)
 	$(CC) -o $(OBJSSERVER) $(SRCSSERVER) $(LIBRARIES) $(LIBS)
 
-cliente: $(OBJS)
-	$(CC) -o $(OBJSCLIENT) $(SRCSCLIENT) $(LIBRARIES) $(LIBS)
-
-all: $(OBJS)
-	$(CC) -o $(OBJSSERVER) $(SRCSSERVER) $(LIBRARIES) $(LIBS)
+cliente: $(OBJSCLIENT)
 	$(CC) -o $(OBJSCLIENT) $(SRCSCLIENT) $(LIBRARIES) $(LIBS)
 	
 #REGLA 2: genera los .o cuando es necesario, dependencia de los .c y .h
@@ -50,7 +48,7 @@ all: $(OBJS)
 	
 # REGLA 3: borra el ejecutable (prerrequisito: clean)
 cleanall: clean
-	rm   -f $(OUTPUT) 
+	rm -f $(OUTPUT) 
 
 # REGLA 4: borra los ficheros .o y los de backup (terminan en ~)
 clean:

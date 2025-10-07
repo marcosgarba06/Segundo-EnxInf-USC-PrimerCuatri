@@ -5,11 +5,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "abb.h"
+#include "funcionesJdT.h"
 
 int main(int argc, char const *argv[])
 {
     char opcion;
     TABB arbol;
+    crearAbb(&arbol);
     do
     {
         printf("Bienvenid@ al programa de gestion de personajes Juego de Tronos.\n");
@@ -22,20 +24,24 @@ int main(int argc, char const *argv[])
         printf("\n--------------------------------\n");
         printf("\nOpcion: ");
         scanf(" %c", &opcion);
+        printf("\n");
 
         switch (opcion)
         {
         case 'A': case 'a':
-
+            anadirPersonaje(&arbol);
             break;
 
         case 'L': case 'l':
+            listadoPersonajes(arbol);
             break;
 
         case 'E': case 'e':
+            eliminarPersonaje(&arbol);
             break;
 
         case 'S': case 's':
+            destruirAbb(&arbol);
             printf("Saliendo del programa de JdT...\n");
             break;
 

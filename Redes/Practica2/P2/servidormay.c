@@ -17,8 +17,9 @@ int main(int argc, char** argv)
 
     //definicion de variables
     uint16_t puerto;
-    int socketServidor, socketDatos, tamanho;
+    int socketServidor, socketDatos;
     struct sockaddr_in ipportserv, datos;
+    socklen_t tamanho;
     char ipCliente[INET_ADDRSTRLEN]; //ip del cliente
 
 
@@ -80,7 +81,7 @@ int main(int argc, char** argv)
         {
             //n = numero de bytes recibidos -1
             linea[n] = '\0'; //Se añade el caracter nulo al final de la cadena recibida para asegurar que es una cadena
-            
+            sleep(6);
             //Pasar a mayusculas
             for (int i = 0; i < n; i++){
                 linea[i] = toupper(linea[i]);

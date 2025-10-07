@@ -10,10 +10,10 @@ INCLUDES = -I $(HEADER_FILES_DIR)
 OUTPUT = jdt
 
 #ficheros .h.  Si hay varios, se precede cada uno con $(HEADER_FILES_DIR)/
-LIB_HEADERS = $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/lista.h $(HEADER_FILES_DIR)/juegodetronos.h
+LIB_HEADERS = $(HEADER_FILES_DIR)/abb.h $(HEADER_FILES_DIR)/lista.h $(HEADER_FILES_DIR)/funcionesJdT.h
 
 #FUENTES: todos los archivos .c necesarios
-SRCS = main.c abb.c lista.c juegodetronos.c
+SRCS = main.c abb.c lista.c funcionesJdT.c
 
 #ficheros .o: todos los .o con un analogo .c en SRCS
 OBJS = $(SRCS:.c=.o)
