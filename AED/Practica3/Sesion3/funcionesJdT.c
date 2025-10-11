@@ -71,15 +71,17 @@ void anadirPersonaje(TABB *arbol) {
     scanf(" %hu", &nodo.real); //hu lee unsigned short
     printf("\n");
 
-    printf("Descripcion del personaje (- en caso de desconocer): ");
-    scanf(" %[^\n\r]", nodo.description);
-    printf("\n");
+    
 
     //procesar las listas
     hacerLista(&nodo.parents, "Padres");
     hacerLista(&nodo.siblings, "Hermanos");
     hacerLista(&nodo.killed, "Personas que ha asesinado");
     hacerLista(&nodo.marriedEngaged, "Personas que ha sido pareja");
+
+    printf("Descripcion del personaje (- en caso de desconocer): ");
+    scanf(" %[^\n\r]", nodo.description);
+    printf("\n");
 
     insertarElementoAbb(arbol, nodo);
 
@@ -170,6 +172,7 @@ void listadoPersonajes(TABB arbol){
     }
 }
 
+//Funcion que elimina a un personaje de la base de datos
 void eliminarPersonaje(TABB *arbol){
     TIPOELEMENTOABB e;
     printf("Introduce el nombre del personaje a eliminar:");
@@ -185,3 +188,70 @@ void eliminarPersonaje(TABB *arbol){
         printf("El personaje que deseas eliminar no ha sido registrado en la base de datos.\n");
     }
 }
+
+//Funcion que imprime la lista en el archivo txt
+void imprimirListaArch(TLISTA list, FILE *f){
+   
+    TIPOELEMENTOLISTA elemento;
+    TPOSICION posActual, posFinal;
+
+    posActual = primeroLista(list);
+    posFinal = finLista(list);
+
+    while (posFinal != posActual)
+    {
+        recuperarElementoLista(list, posActual, &elemento);
+        posActual = siguienteLista(list, posActual);
+        if (posActual == posFinal){
+            fprintf(f, "%s|", elemento.name); //Si es el ultimo elemento de la lista poner  /
+        }
+        else{
+            fprintf(f, "%s,", elemento.name); //Si no es el ultimo elemento de la lista poner ,
+        }
+    }
+} 
+
+void imprimirPersonajeArch(TIPOELEMENTOABB personaje, FILE *f){
+    fprintf(f, "%s|%s|%s|%hu|", personaje.name, personaje.character_type, personaje.house, personaje.real);
+    
+    //Imprimir listas, si son vacias imprimir "-|", si no imprimir la lista con la funcion imprimirListaArch
+    
+    if (!esListaVacia(personaje.parents)) //lista padres
+        imprimirListaArch(personaje.parents, f);
+    else
+        fprintf(f, "-|");
+
+    if (!esListaVacia(personaje.siblings)) //lista hermanos
+         imprimirListaArch(personaje.siblings, f);
+    else
+        fprintf(f, "-|");
+       
+    if (!esListaVacia(personaje.killed)) //lista personas que ha asesinado
+        imprimirListaArch(personaje.killed, f);
+    else
+        fprintf(f, "-|");
+
+    if (!esListaVacia(personaje.marriedEngaged)) //lista personas que ha sido pareja
+        imprimirListaArch(personaje.marriedEngaged, f);   
+    else
+        fprintf(f, "-|");
+
+    fprintf(f, "%s\n", personaje.description); //Descripcion al final y salto de linea
+}
+
+//Imprime en el archivo todos los personajes del arbol
+void imprimirArchivo(TABB arbol, FILE *f){
+    TIPOELEMENTOABB elemen;
+
+    if (!esAbbVacio(arbol)) { //Comprobar que no es vac
+        //Usando recorrido PostOrden (IRD)
+        imprimirArchivo(izqAbb(arbol), f); //Primero subarbol izquierdo recursivamente
+        imprimirArchivo(derAbb(arbol), f); //luego subarbol derecho
+        leerElementoAbb(arbol, &elemen); //Elemento actual
+        imprimirPersonajeArch(elemen, f); 
+    }else
+        return;
+}
+
+
+
