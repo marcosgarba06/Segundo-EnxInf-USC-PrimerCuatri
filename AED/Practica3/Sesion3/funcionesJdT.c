@@ -213,8 +213,7 @@ void _stripByComma(TLISTA *lista, char *cadena){
 //Funcion que carga en el ABB los personajes del archivo
 void cargar_archivo(TABB *arbol, int argc, char **argv){
     if (argc != 3 || strcmp(argv[1], "-f") != 0) {
-        perror("Uso: ./ejecutable -f archivo_salida\n");
-        printf("El programa continuará con una base de datos vacía.\n\n");
+        printf("El programa continuará con una base de datos vacía debido a que no se ha introducido archivo.\n\n");
         return;
     }
 
@@ -294,6 +293,7 @@ void imprimirListaArch(TLISTA list, FILE *f){
     }
 } 
 
+//REVISAR PARA QUE NO IMPRIMA UN SALTO DE LINEA SI ES EL ULTIMO PERSONAJE
 void imprimirPersonajeArch(TIPOELEMENTOABB personaje, FILE *f){
     fprintf(f, "%s|%s|%s|%hu|", personaje.name, personaje.character_type, personaje.house, personaje.real);
     
@@ -323,18 +323,31 @@ void imprimirPersonajeArch(TIPOELEMENTOABB personaje, FILE *f){
 }
 
 //Imprime en el archivo todos los personajes del arbol
-void imprimirArchivo(TABB arbol, FILE *f){
+void imprimirArchivoAux(TABB arbol, FILE *f){
+    if (esAbbVacio(arbol))
+        return;
+
     TIPOELEMENTOABB elemen;
 
-    if (!esAbbVacio(arbol)) { //Comprobar que no es vac
-        //Usando recorrido PostOrden (IRD)
-        imprimirArchivo(izqAbb(arbol), f); //Primero subarbol izquierdo recursivamente
-        imprimirArchivo(derAbb(arbol), f); //luego subarbol derecho
-        leerElementoAbb(arbol, &elemen); //Elemento actual
-        imprimirPersonajeArch(elemen, f); 
-    }else
-        return;
+    imprimirArchivoAux(izqAbb(arbol), f);
+    imprimirArchivoAux(derAbb(arbol), f);
+    leerElementoAbb(arbol, &elemen);
+    imprimirPersonajeArch(elemen, f);
 }
 
-
+//Funcion que imprime en el archivo los personajes de la base de datos del ABB
+//Se hacen funciones separadas para que no aparezca 3 veces el scanf
+void imprimirArchivo(TABB arbol,  int argc, char **argv){
+    if (argc != 3 || strcmp(argv[1], "-f") != 0) {
+        char filename[100];
+        printf("No se ha indicado archivo por linea de comandos\n");
+        printf("Nombre del archivo para guardar la base de datos:");
+        scanf(" %s", filename);
+        argv[1] = "-f";
+        argv[2] = filename;
+    }
+    FILE *f = fopen(argv[2], "w"); //Abrir archivo en modo escritura
+    imprimirArchivoAux(arbol, f);
+    fclose(f);
+}
 

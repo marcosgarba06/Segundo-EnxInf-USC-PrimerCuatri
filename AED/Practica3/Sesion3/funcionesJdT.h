@@ -35,9 +35,10 @@ void cargar_archivo(TABB *arbol, int argc, char **argv);
 /*
 * Funcion que imprime en el archivo los persionajes de la base de datos del ABB
 * @param arbol Arbol donde se encuentran los personajes
-* @param f Puntero al archivo donde se imprimirá la información
+* @param argc Numero de argumentos de la linea de comandos
+* @param argv Vector de cadenas con los argumentos de la linea de comandos
 */
-void imprimirArchivo(TABB arbol, FILE *f);
+void imprimirArchivo(TABB arbol, int argc, char **argv);
 
 
 #endif /* FUNCIONESJDT_H */

@@ -42,7 +42,7 @@ int main(int argc, char** argv)
             break;
 
         case 'S': case 's':
-            //imprimirArchivo(arbol, f);
+            imprimirArchivo(arbol, argc, argv);
             destruirAbb(&arbol);
             printf("Saliendo del programa de JdT...\n");
             break;
