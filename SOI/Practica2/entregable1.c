@@ -37,7 +37,7 @@ int main()
         car = 'a';
         pi = 5;
         *var = 14;
-        printf("Este proceso é o pai con PID %d, PID do pai %d, UID %d, UID efectiva %d e GUID %d\n", getpid(), getppid(), getuid(), getegid(), getgid()); //imprime os datos do proceso
+        printf("Este proceso é o pai con PID %d, PID do pai %d, UID %d, UID efectiva %d e GUID %d\n", getpid(), getppid(), getuid(), geteuid(), getgid()); //imprime os datos do proceso
         printf("O ambiente é %s\n", getenv("PATH")); //imprime a variable de entorno PATH
 
         //Imprimir os valores e as direccións das variables

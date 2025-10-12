@@ -7,21 +7,12 @@
 #include "abb.h"
 #include "funcionesJdT.h"
 
-int main(int argc, char const *argv[])
+int main(int argc, char** argv)
 {
-    if (argc != 3 || strcmp(argv[1], "-f") != 0) {
-        perror("Uso: ./programa -f archivo_salida\n");
-        return 1;
-    }
-    FILE *f = fopen(argv[2], "w+");
-    if (f == NULL) {
-        perror("Error al abrir el archivo de salida\n");
-        return 1;
-    }
-
     char opcion;
     TABB arbol;
     crearAbb(&arbol);
+    cargar_archivo(&arbol, argc, argv);
     do
     {
         printf("Bienvenid@ al programa de gestion de personajes Juego de Tronos.\n");
@@ -51,8 +42,7 @@ int main(int argc, char const *argv[])
             break;
 
         case 'S': case 's':
-            imprimirArchivo(arbol, f);
-            fclose(f);
+            //imprimirArchivo(arbol, f);
             destruirAbb(&arbol);
             printf("Saliendo del programa de JdT...\n");
             break;

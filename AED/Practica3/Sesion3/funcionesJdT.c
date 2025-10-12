@@ -189,6 +189,89 @@ void eliminarPersonaje(TABB *arbol){
     }
 }
 
+//Funcion que elimina el retorno de carro al leer una linea de un archivo
+void _strip_line ( char * linea ) {
+    linea [ strcspn ( linea , "\r\n") ] = 0;
+}
+
+//Funcion que procesa una cadena que contiene elementos separados por comas y los inserta en una lista.
+void _stripByComma(TLISTA *lista, char *cadena){
+
+    if (cadena == NULL ||strcmp(cadena, "-") == 0) {
+        return; 
+    } else { 
+        TIPOELEMENTOLISTA e;
+        char *token = strtok(cadena, ","); 
+        while (token != NULL) {
+            strncpy(e.name, token, NAME_LENGTH); 
+            insertarElementoLista(lista, finLista(*lista), e); 
+            token = strtok(NULL, ","); // Obtener el siguiente token
+        }
+    }
+}
+
+//Funcion que carga en el ABB los personajes del archivo
+void cargar_archivo(TABB *arbol, int argc, char **argv){
+    if (argc != 3 || strcmp(argv[1], "-f") != 0) {
+        perror("Uso: ./ejecutable -f archivo_salida\n");
+        printf("El programa continuará con una base de datos vacía.\n\n");
+        return;
+    }
+
+    FILE *f = fopen(argv[2], "r"); //Abrir archivo en modo lectura
+    
+    char line[1024]; //Variable para leer la linea del archivo
+
+    while (fgets(line, sizeof(line), f))
+    {    
+        TIPOELEMENTOABB personaje;
+        _strip_line(line); //Eliminar retorno de carro
+
+        char *name, *character_type, *house, *real, *description;
+        char *parents_list, *siblings_list, *killed_list, *marriedEngaged_list;
+
+        name = strtok(line, "|"); //Dividir la linea por el caracter '|'
+        character_type = strtok(NULL, "|");
+        house = strtok(NULL, "|");
+        real = strtok(NULL, "|");
+        parents_list = strtok(NULL, "|");
+        siblings_list = strtok(NULL, "|");
+        killed_list = strtok(NULL, "|");
+        marriedEngaged_list = strtok(NULL, "|");
+        description = strtok(NULL, "|");
+
+        //Asignar valores a los campos del personaje
+        if (name) 
+            strncpy(personaje.name, name, NAME_LENGTH);
+        if (character_type) 
+            strncpy(personaje.character_type, character_type, NAME_LENGTH);
+        if (house) 
+            strncpy(personaje.house, house, NAME_LENGTH);
+        if (real) 
+            personaje.real = (unsigned short)atoi(real);
+
+        //Crear listas
+        crearLista(&personaje.parents);
+        crearLista(&personaje.siblings);
+        crearLista(&personaje.killed);
+        crearLista(&personaje.marriedEngaged);
+
+        //procesar las listas
+        _stripByComma(&personaje.parents, parents_list);
+        _stripByComma(&personaje.siblings, siblings_list);
+        _stripByComma(&personaje.killed, killed_list);
+        _stripByComma(&personaje.marriedEngaged, marriedEngaged_list);
+
+        if (description) 
+            strncpy(personaje.description, description, 3*NAME_LENGTH);
+        
+        insertarElementoAbb(arbol, personaje); //Insertar personaje en el ABB
+
+    }
+    fclose(f); //Cerrar archivo
+    printf("Base de datos cargada correctamente desde el archivo %s\n\n", argv[2]);
+}
+
 //Funcion que imprime la lista en el archivo txt
 void imprimirListaArch(TLISTA list, FILE *f){
    
