@@ -55,5 +55,12 @@ void imprimirArchivo(TABB arbol, int argc, char **argv);
 void buscarPersonaje(TABB arbol);
 
 
+//FUNCION PARA MODIFICAR UN PERSONAJE
+/*
+* Funcion que modifica un personaje en la base de datos del ABB
+* @param arbol Puntero al arbol donde se modificará el personaje
+*/
+void modificarPersonaje(TABB *arbol);
+
 
 #endif /* FUNCIONESJDT_H */

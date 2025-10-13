@@ -388,27 +388,43 @@ void _listaTipoAux(TABB arbol, char *tipo){
 //Funcion que lista los personajes segun su tipo
 void listadoTipo(TABB arbol){
     TIPOELEMENTOABB elemen;
-    int opcion;
+    char opcion;
     
-    printf("Introduce el tipo de personaje a listar (1: persona , 2: gigante , 3: lobo , 4: dragon , 5: criatura):");
-    scanf(" %d", &opcion);
+    printf("Introduce el tipo de personaje a listar (1: persona , 2: gigante , 3: lobo , 4: dragon , 5: criatura, -: desconocido):");
+    scanf(" %c", &opcion);
     printf("\n");
 
     switch (opcion){
-        case 1: strncpy(elemen.character_type, "persona", NAME_LENGTH); break;
-        case 2: strncpy(elemen.character_type, "gigante", NAME_LENGTH); break;
-        case 3: strncpy(elemen.character_type, "lobo", NAME_LENGTH); break;
-        case 4: strncpy(elemen.character_type, "dragon", NAME_LENGTH); break;
-        case 5: strncpy(elemen.character_type, "criatura", NAME_LENGTH); break;
-    default: break;
+        case '1': strncpy(elemen.character_type, "persona", NAME_LENGTH); break;
+        case '2': strncpy(elemen.character_type, "gigante", NAME_LENGTH); break;
+        case '3': strncpy(elemen.character_type, "lobo", NAME_LENGTH); break;
+        case '4': strncpy(elemen.character_type, "dragon", NAME_LENGTH); break;
+        case '5': strncpy(elemen.character_type, "criatura", NAME_LENGTH); break;
+        case '-': strncpy(elemen.character_type, "-", NAME_LENGTH); break;
+        default: break;
     }   
     
     _listaTipoAux(arbol, elemen.character_type);
     printf("\n");    
 }
 
+void copiarLista(TLISTA original, TLISTA *copia){
+    crearLista(copia);
+    TIPOELEMENTOLISTA elemento;
+    TPOSICION posActual, posFinal;
+    posActual = primeroLista(original);
+    posFinal = finLista(original);
+    while (posActual != posFinal)
+    {
+        recuperarElementoLista(original, posActual, &elemento);
+        insertarElementoLista(copia, finLista(*copia), elemento);
+        posActual = siguienteLista(original, posActual);
+    }
+
+}
 void modificarPersonaje(TABB *arbol){
     TIPOELEMENTOABB e, temp;
+    TIPOELEMENTOLISTA elemento;
     printf("Introduce el nombre del personaje a modificar:");
     scanf(" %[^\n\r]", temp.name);
     char opcion;
@@ -426,9 +442,69 @@ void modificarPersonaje(TABB *arbol){
 
     switch (opcion)
     {
-    case:
+    case 'n':
+        TIPOELEMENTOABB new;
+        new = e; //Copiar el personaje actual en uno nuevo
+        printf("Nuevo nombre del personaje: ");
+        scanf(" %[^\n\r]", new.name);
+
+        //copiar listas
+        copiarLista(e.parents, &new.parents);
+        copiarLista(e.siblings, &new.siblings);
+        copiarLista(e.killed, &new.killed);
+        copiarLista(e.marriedEngaged, &new.marriedEngaged);
+        
+        //Modificar el personaje en el ABB
+        suprimirElementoAbb(arbol, e); //Eliminar el personaje antiguo
+        insertarElementoAbb(arbol, new); //Insertar el personaje con el nuevo nombre        
+        break;
+    case 'c':
+        printf("Nuevo tipo de personaje (- en caso de desconocer): ");
+        scanf(" %[^\n\r]", e.character_type);
+        modificarElementoAbb(*arbol, e);
+        break;
+    case 'h':
+        printf("Nueva casa del personaje (- en caso de desconocer): ");
+        scanf(" %[^\n\r]", e.house);
+        modificarElementoAbb(*arbol, e);
+        break;
+    case 'r':
+        printf("Es familia real (1 para si, 0 para no): ");
+        scanf(" %hu", &e.real); //hu lee unsigned short
+        modificarElementoAbb(*arbol, e);
+        break;
+    case 'p':
+        printf("Nuevo elemento para la lista de padres: ");
+        scanf(" %[^\n\r]", elemento.name);
+        modificarElementoAbb(*arbol, e);
+        insertarElementoLista(&e.parents,finLista(e.parents), elemento);
+
+        break;
+    case 's':
+        printf("Nuevo elemento para la lista de hermanos: ");
+        scanf(" %[^\n\r]", elemento.name);
+        insertarElementoLista(&e.siblings,finLista(e.siblings), elemento);
+        modificarElementoAbb(*arbol, e);
+        break;
+    case 'k':
+        printf("Nuevo elemento para la lista de personas que ha asesinado: ");
+        scanf(" %[^\n\r]", elemento.name);
+        insertarElementoLista(&e.killed,finLista(e.killed), elemento);
+        break;
+    case 'm':
+        printf("Nuevo elemento para la lista de personas que ha sido pareja: ");
+        scanf(" %[^\n\r]", elemento.name);
+        insertarElementoLista(&e.marriedEngaged,finLista(e.marriedEngaged), elemento);
+        modificarElementoAbb(*arbol, e);
+        break;
+    case 'd':
+        printf("Nueva descripcion del personaje (- en caso de desconocer): ");
+        scanf(" %[^\n\r]", e.description);
+        modificarElementoAbb(*arbol, e);
         break;
     default:
         break;
     }
 }
+
+
