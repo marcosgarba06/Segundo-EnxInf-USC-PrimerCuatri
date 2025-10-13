@@ -13,9 +13,9 @@ int main(int argc, char** argv)
     TABB arbol;
     crearAbb(&arbol);
     cargar_archivo(&arbol, argc, argv);
+    printf("Bienvenid@ al programa de gestion de personajes Juego de Tronos.\n");
     do
     {
-        printf("Bienvenid@ al programa de gestion de personajes Juego de Tronos.\n");
         printf("----------------------------------\n");
         printf("Elija una de las opciones:\n");
         printf("A/a. Anadir personaje\n");
@@ -23,6 +23,7 @@ int main(int argc, char** argv)
         printf("B/b. Buscar personaje por nombre\n");
         printf("T/t Listar personaje por tipo\n");
         printf("M/m. Modificar personaje\n");
+        printf("F/f. Buscar la familia mas numerosa:\n");
         printf("E/e. Eliminar personaje\n");
         printf("S/s. Salir del programa de JdT\n");
         printf("\n--------------------------------\n");
@@ -51,7 +52,9 @@ int main(int argc, char** argv)
         case 'M': case 'm':
             modificarPersonaje(&arbol);
             break;
-
+        case 'F': case 'f':
+            familiaNumerosa(arbol);
+            break;
         case 'E': case 'e':
             eliminarPersonaje(&arbol);
             break;

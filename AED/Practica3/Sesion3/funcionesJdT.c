@@ -13,6 +13,12 @@
 //rellenarla cuando el nombre del personaje sea "fin". Cuando exista algún campo desconocido, 
 //el usuario tecleará el  carácter ’-’.
 
+//struct para el vector de structs de la familia numerosa
+typedef struct {
+    TLISTA parents; //lista
+    TLISTA siblings; //lista
+} FAMILIANUMEROSA;
+
 void hacerLista(TLISTA *lista, char *name){
     
     TIPOELEMENTOLISTA elemento;
@@ -507,4 +513,152 @@ void modificarPersonaje(TABB *arbol){
     }
 }
 
+int _tamanhoFamilia(TIPOELEMENTOABB e){
+    return (longitudLista(e.parents) + longitudLista(e.siblings) + 1);
+}
 
+//Funcion que busca la mayor familia (suma de padres y hermanos) en el arbol
+void _buscarMayorFamilia(TABB arbol, int *max){
+    if (esAbbVacio(arbol)) {
+        return;
+    }else{
+        TIPOELEMENTOABB elemen;
+        int num;
+
+        //Recorrido preorden (RID)
+        leerElementoAbb(arbol, &elemen); //raiz
+        num = _tamanhoFamilia(elemen);
+        if (num > *max)
+            *max = num;
+        
+        _buscarMayorFamilia(izqAbb(arbol), max); //izquierda
+        _buscarMayorFamilia(derAbb(arbol), max); //derecha
+    }
+}
+
+
+int _listasIguales(TLISTA l1, TLISTA l2){
+    if (longitudLista(l1) != longitudLista(l2))
+        return 0;
+    
+    TPOSICION pos1, pos2;
+    TIPOELEMENTOLISTA elemento, elemento2;
+    int encontrado = 0;
+
+    pos1 = primeroLista(l1);
+
+    //Comparar las listas elemento a elemento, cada elemento de la lista 1
+    //se debe comparar con cada elemento de la lista 2 porque las listas pueden
+    //estar en distinto orden  pero tener los mismos elementos
+    while (pos1 != finLista(l1)){
+        recuperarElementoLista(l1, pos1, &elemento);
+        pos2 = primeroLista(l2);
+        while (pos2 != finLista(l2))
+        {
+            recuperarElementoLista(l2, pos2, &elemento2);
+            if (strcmp(elemento.name, elemento2.name) == 0){
+                encontrado = 1;
+                break;
+            }
+            pos2 = siguienteLista(l2, pos2);
+        }
+        if (!encontrado)
+            return 0;
+        pos1 = siguienteLista(l1, pos1);
+        
+    }
+    //Si se han encontrado todos los elementos de la lista 1 en la lista 2, son iguales
+    return 1;
+}
+
+//Comprobar si las listas de padres y hermanos son iguales
+//Si alguna de las dos listas no es igual, no es la misma familia
+int _esFamiliaRepetida(FAMILIANUMEROSA fam, TLISTA padres, TLISTA hermanos){
+   
+    if (!_listasIguales(fam.parents, padres)) return 0;
+    else if (!_listasIguales(fam.siblings, hermanos)) return 0;
+    else return 1;
+}
+
+void _familiaNumerosaAVectorStruct(TABB arbol, int max, FAMILIANUMEROSA *familias, int *numFamilas){
+    if(esAbbVacio(arbol)) {
+        return;
+    }else{
+        TIPOELEMENTOABB elemen;
+        int tamFam, repe, i;
+        //Recorrido preorden (RID)
+        leerElementoAbb(arbol, &elemen); //raiz
+        tamFam = _tamanhoFamilia(elemen);
+        
+        //Solo se comparan las familias que tengan el maximo numero de miembros
+        if (tamFam == max){
+            repe = 0;
+            for (i = 0; i < *numFamilas; i++){
+                //comprobar si la familia ya esta en el vector de structs
+                if (_esFamiliaRepetida(familias[i], elemen.parents, elemen.siblings)){
+                    repe = 1;
+                    break;
+                }
+            }
+            //Si no esta repetida, se añade al vector de structs
+            if (!repe){
+                FAMILIANUMEROSA fam;
+                copiarLista(elemen.parents, &fam.parents);
+                copiarLista(elemen.siblings, &fam.siblings);
+                familias[*numFamilas] = fam;
+                (*numFamilas)++;
+            }
+        }
+    }
+    _familiaNumerosaAVectorStruct(izqAbb(arbol), max, familias, numFamilas); //izquierda
+    _familiaNumerosaAVectorStruct(derAbb(arbol), max, familias, numFamilas); //derecha
+}
+
+//FALTA COMPROBAR QUE SON DE TIPO PERSONA
+void familiaNumerosa(TABB arbol){
+    int max = 0;
+    _buscarMayorFamilia(arbol, &max);
+    FAMILIANUMEROSA familias[30]; //Vector de structs para almacenar las familias numerosas
+    char nombres[30][NAME_LENGTH];
+    int numFamilas = 0;
+    _familiaNumerosaAVectorStruct(arbol, max, familias, &numFamilas);
+
+    //Imprimir las familias numerosas
+    if (numFamilas == 0){
+        printf("No hay familias en la base de datos.\n");
+        return;
+    }else if (numFamilas == 1)
+    {
+        printf("La familia mas numerosa tiene %d miembros:\n", max);
+    }else{
+        printf("Las familias mas numerosas tienen %d miembros y son:\n", max);
+       
+    }
+    for  (int i = 0; i < numFamilas; i++){
+        printf("Familia %d:\n", i+1);
+        printf("Padres:");
+        _imprimirLista(familias[i].parents);
+        printf("\nHermanos:");
+        //Hacer que imprima el personaje con el que se ha encontrado la lista al final
+        TPOSICION pos;
+        TIPOELEMENTOLISTA elemento;
+        int primero = 1;  // Variable flag para el primer elemento
+        while (pos != finLista(familias[i].siblings)){
+            recuperarElementoLista(familias[i].siblings, pos, &elemento);
+            if (!primero) printf(", ");
+        
+            printf("%s", elemento.name);
+            primero = 0;
+            pos = siguienteLista(familias[i].siblings, pos);
+        }
+        //Imprimir el personaje con el que se ha encontrado la lista
+        if (!primero) printf(", "); //Si ya se ha impreso algun hermano, poner una coma
+        printf("%s\n", nombres[i]);
+        printf("\n");
+    }
+    //Liberar memoria de las listas dentro del vector de structs
+    for (int i = 0; i < numFamilas; i++){
+        destruirLista(&familias[i].parents);
+        destruirLista(&familias[i].siblings);
+    }
+}

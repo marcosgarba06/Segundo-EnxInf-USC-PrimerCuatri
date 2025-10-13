@@ -62,5 +62,11 @@ void buscarPersonaje(TABB arbol);
 */
 void modificarPersonaje(TABB *arbol);
 
+//FUNCION PARA BUSCAR LA FAMILIA MÁS NUMEROSA
+/*
+* Funcion que busca la familia más numerosa (suma de padres y hermanos) en la base de datos del ABB
+* @param arbol Arbol donde se encuentran los personajes
+*/
+void familiaNumerosa(TABB arbol);
 
 #endif /* FUNCIONESJDT_H */
