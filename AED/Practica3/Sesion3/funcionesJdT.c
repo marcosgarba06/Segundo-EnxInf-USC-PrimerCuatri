@@ -351,3 +351,84 @@ void imprimirArchivo(TABB arbol,  int argc, char **argv){
     fclose(f);
 }
 
+//Funcion que busca un personaje por nombre 
+void buscarPersonaje(TABB arbol){
+    TIPOELEMENTOABB e, temp;
+    printf("Introduce el nombre del personaje a buscar:");
+    scanf(" %[^\n\r]", temp.name);
+
+    if(esMiembroAbb(arbol,temp)){
+        buscarNodoAbb(arbol,temp.name,&e);
+        _imprimirPersonaje(e);
+    }
+    else{
+        printf("El personaje no ha sido registrado en la base de datos.\n");
+    }
+    printf("\n");
+}
+
+//Funcion auxiliar para listar los personajes segun su tipo
+void _listaTipoAux(TABB arbol, char *tipo){
+    TIPOELEMENTOABB elemen;
+    if (esAbbVacio(arbol)) {
+        return;
+    }else{
+        //InOrden (IRD)
+        _listaTipoAux(izqAbb(arbol), tipo); //izquierda
+        
+        leerElementoAbb(arbol, &elemen); //raiz
+        if (strcmp(elemen.character_type, tipo) == 0){
+            _imprimirPersonaje(elemen); 
+            printf("\n");
+        }
+
+        _listaTipoAux(derAbb(arbol), tipo); //derecha
+    }
+}
+//Funcion que lista los personajes segun su tipo
+void listadoTipo(TABB arbol){
+    TIPOELEMENTOABB elemen;
+    int opcion;
+    
+    printf("Introduce el tipo de personaje a listar (1: persona , 2: gigante , 3: lobo , 4: dragon , 5: criatura):");
+    scanf(" %d", &opcion);
+    printf("\n");
+
+    switch (opcion){
+        case 1: strncpy(elemen.character_type, "persona", NAME_LENGTH); break;
+        case 2: strncpy(elemen.character_type, "gigante", NAME_LENGTH); break;
+        case 3: strncpy(elemen.character_type, "lobo", NAME_LENGTH); break;
+        case 4: strncpy(elemen.character_type, "dragon", NAME_LENGTH); break;
+        case 5: strncpy(elemen.character_type, "criatura", NAME_LENGTH); break;
+    default: break;
+    }   
+    
+    _listaTipoAux(arbol, elemen.character_type);
+    printf("\n");    
+}
+
+void modificarPersonaje(TABB *arbol){
+    TIPOELEMENTOABB e, temp;
+    printf("Introduce el nombre del personaje a modificar:");
+    scanf(" %[^\n\r]", temp.name);
+    char opcion;
+
+    if(!esMiembroAbb(*arbol,temp)){
+        printf("El personaje que deseas modificar no ha sido registrado en la base de datos.\n");
+        return;
+    }
+
+    buscarNodoAbb(*arbol,temp.name,&e);
+    _imprimirPersonaje(e);
+
+    printf("¿Qué quieres modificar (n/c/h/r/p/s/k/m/d)? ");
+    scanf(" %c", &opcion);
+
+    switch (opcion)
+    {
+    case:
+        break;
+    default:
+        break;
+    }
+}

@@ -20,6 +20,8 @@ int main(int argc, char** argv)
         printf("Elija una de las opciones:\n");
         printf("A/a. Anadir personaje\n");
         printf("L/l. Listar personajes\n");
+        printf("B/b. Buscar personaje por nombre\n");
+        printf("T/t Listar personaje por tipo\n");
         printf("E/e. Eliminar personaje\n");
         printf("S/s. Salir del programa de JdT\n");
         printf("\n--------------------------------\n");
@@ -32,9 +34,17 @@ int main(int argc, char** argv)
         case 'A': case 'a':
             anadirPersonaje(&arbol);
             break;
-
+            
         case 'L': case 'l':
             listadoPersonajes(arbol);
+            break;
+
+        case 'B': case 'b':
+            buscarPersonaje(arbol);
+            break;
+
+        case 'T': case 't':
+            listadoTipo(arbol);
             break;
 
         case 'E': case 'e':

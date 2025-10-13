@@ -1,0 +1,100 @@
+Aegon II Targaryen|persona|Targaryen|1|Viserys I Targaryen,Alicent Hightower|Helaena Targaryen,Aemond Targaryen,Daeron Targaryen|Jaehaerys Targaryen,Lucerys Velaryon,Rhaenyra Targaryen|Helaena Targaryen|Rey durante la Danza de los Dragones, enfrentado a su hermana Rhaenyra por el trono
+Alicent Hightower|persona|Hightower|1|Otto Hightower|-|-|Viserys I Targaryen|Reina de los Siete Reinos, madre de Aegon II
+Benjen Stark|persona|Stark|0|Rickard Stark|Eddard Stark,Brandon Stark,Lyanna Stark|-|-|Guardia de la Noche desaparecido
+Beric Dondarrion|persona|-|0|-|-|-|-|Caballero resucitado por la magia
+Caraxes|dragon|Targaryen|0|-|-|-|-|Dragon rojo montado por Daemon Targaryen
+Cersei Lannister|persona|Lannister,Baratheon|0|Tywin Lannister|Jaime Lannister,Tyrion Lannister|Lancel Lannister,High Sparrow,Loras Tyrell,Mace Tyrell,Margaery Tyrell,Kevan Lannister,Tyene Sand|Robert Baratheon|Reina ambiciosa de la Casa Lannister
+Craster|persona|-|0|-|-|-|Night's Watch Brother #2|-
+Daemon Targaryen|persona|Targaryen|1|Baelon Targaryen,Alyssa Targaryen|Viserys I Targaryen|-|Rhea Royce,Laena Velaryon,Rhaenyra Targaryen|Principe de la Ciudad, guerrero habil y jinete de dragon
+Davos Seaworth|persona|-|0|-|-|-|-|Consejero leal conocido como el Caballero de la Cebolla
+Drogon|dragon|Targaryen|0|-|Rhaegal,Viserion|Pyat Pree,Kraznys mo Nakloz,Zalla|-|Dragon companero de Daenerys Targaryen
+Eddard Stark|persona|Stark|0|Rickard Stark|Brandon Stark,Benjen Stark,Lyanna Stark|Arthur Dayne,Will,Lady,Gerold Hightower|Catelyn Stark|Senor de Invernalia, honorable y protector de su familia
+Ellaria Sand|persona|Martell|0|-|-|-|Oberyn Martell|Amante de Oberyn Martell
+Ghost|lobo|Stark|0|-|Grey Wind,Lady,Nymeria,Summer,Shaggydog|Rast|-|Lobo huargo companero de Jon Snow
+Gilly|persona|-|0|-|-|-|Craster|Samwell Tarly
+Gregor Clegane|persona|-|0|-|Sandor Clegane|Sandor Clegane|Oberyn Martell|-
+Grey Worm|persona|-|0|-|-|Kraznys mo Nakloz,Meereenese Noble|Missandei|Comandante de los Inmaculados
+Hoster Tully|persona|Tully|0|-|Catelyn Stark,Lysa Arryn,Edmure Tully|-|-|Patriarca de la Casa Tully
+Hot Pie|persona|-|0|-|-|-|-|Amigo de Arya Stark
+Joffrey Baratheon|persona|Baratheon|1|Cersei Lannister,Robert Baratheon|Myrcella Baratheon,Tommen Baratheon|-|Margaery Tyrell|Rey cruel de los Siete Reinos
+Jon Snow|persona|Stark,Targaryen|1|Rhaegar Targaryen,Lyanna Stark|-|Othor,Qhorin Halfhand,Orell,Karl Tanner,Styr,Mance Rayder,Janos Slynt,White Walker,Alliser Thorne,Othell Yarwyck,Bowen Marsh,Olly,Lyanna Stark,Daenerys Targaryen|Ygritte|Hijo secreto de Rhaegar y Lyanna, lider de la Guardia de la Noche
+Khal Drogo|persona|-|0|-|-|Viserys Targaryen,Mago|Daenerys Targaryen|Lider dothraki y esposo de Daenerys
+Lancel Lannister|persona|Lannister|0|Kevan Lannister|Martyn Lannister|Robert Baratheon|-|Miembro fanático del Gorrión Supremo
+Leaf|criatura|-|0|-|-|-|-|Niña del bosque que ayuda a Bran Stark
+Loras Tyrell|persona|Tyrell|0|Mace Tyrell|Margaery Tyrell|-|-|Caballero de las Flores
+Lyanna Stark|persona|Stark|0|Rickard Stark|-|-|Robert Baratheon|Hermana valiente de Ned Stark
+Lysa Arryn|persona|Arryn|0|Hoster Tully|Catelyn Stark,Edmure Tully|-|Petyr Baelish|Viuda de Jon Arryn
+Margaery Tyrell|persona|Tyrell|0|Mace Tyrell|Loras Tyrell|-|Renly Baratheon,Joffrey Baratheon,Tommen Baratheon|Joven noble de la Casa Tyrell con ambiciones reales
+Meraxes|dragon|Targaryen|0|-|-|-|-|Dragón plateado montado por Rhaenys Targaryen
+Missandei|persona|-|0|-|-|-|Grey Worm|Traductora y consejera leal de Daenerys Targaryen
+Nymeria|lobo|Stark|0|-|Grey Wind,Lady,Summer,Shaggydog,Ghost|-|-|Lobo huargo companero de Arya Stark
+Oberyn Martell|persona|Martell|0|-|Doran Martell,Elia Martell|-|Ellaria Sand|Principe de Dorne, experto en venenos y combate
+Rhaenyra Targaryen|persona|Targaryen|1|Viserys I Targaryen,Aemma Arryn|Baelon Targaryen|-|Laenor Velaryon,Daemon Targaryen|Heredera al Trono de Hierro, figura central en la Danza de los Dragones
+Rickon Stark|persona|Stark|0|Eddard Stark,Catelyn Stark|Robb Stark,Sansa Stark,Arya Stark,Bran Stark|-|-|Hijo menor de la Casa Stark
+Robb Stark|persona|Stark|1|Eddard Stark,Catelyn Stark|Sansa Stark,Arya Stark,Bran Stark,Rickon Stark|Wallen,Rickard Karstark|Roslin Frey,Talisa Maegyr|Rey en el Norte, hijo mayor de Eddard Stark
+Robert Baratheon|persona|Baratheon|0|-|Stannis Baratheon,Renly Baratheon|Rhaegar Targaryen|Lyanna Stark,Cersei Lannister|Rey de los Siete Reinos tras la rebelion contra los Targaryen
+Sansa Stark|persona|Stark|1|Eddard Stark,Catelyn Stark|Robb Stark,Arya Stark,Bran Stark,Rickon Stark|-|Joffrey Baratheon,Tyrion Lannister,Ramsay Snow|Superviviente de multiples conflictos
+Shadowcat|criatura|-|0|-|-|-|-|Felino salvaje de las montañas del norte
+Shaggydog|lobo|Stark|0|-|Grey Wind,Lady,Nymeria,Summer,Ghost|-|-|Lobo huargo companero de Rickon Stark
+Syrax|dragon|Targaryen|0|-|-|-|-|Dragon amarillo montado por Rhaenyra Targaryen
+Theon Greyjoy|persona|Greyjoy|0|Balon Greyjoy|Yara Greyjoy|Stiv,Rodrik Cassel,Myranda,Bolton Soldier,Harrag|-|Heredero de las Islas del Hierro, criado por los Stark
+Three-Eyed Raven|criatura|-|0|-|-|-|-|Vidente mistico que entrena a Bran Stark
+Tommen Baratheon|persona|Baratheon|1|Cersei Lannister,Robert Baratheon|Joffrey Baratheon,Myrcella Baratheon|-|Margaery Tyrell|Rey joven de los Siete Reinos
+Vhagar|dragon|Targaryen|0|-|-|Arrax|-|Dragon antiguo montado por Aemond Targaryen
+Varys|persona|-|0|-|-|-|-|Maestro de los susurros, espia y manipulador politico
+White Walker|criatura|-|0|-|-|Loboda|-|Criatura magica del lejano norte
+Viserys I Targaryen|persona|Targaryen|1|Jaehaerys I Targaryen,Alysanne Targaryen|Aemond Targaryen|-|Aemma Arryn,Alicent Hightower|Rey de los Siete Reinos
+Wun Wun|gigante|-|0|-|-|Lyanna Mormont|-|Gigante que lucho por el Pueblo Libre y Jon Snow
+Ygritte|persona|-|0|-|-|Old Man,Guymon,Mole's Town Whore,Pypar|Jon Snow|Salvaje valiente que se enamora de Jon Snow
+Yara Greyjoy|persona|Greyjoy|0|Balon Greyjoy|Theon Greyjoy|-|-|Capitana de los Hijos del Hierro
+White Walker|criatura|-|0|-|-|Loboda|-|Criatura magica del norte
+Viserion|dragon|Targaryen|0|-|Drogon,Rhaegal|Pyat Pree,Great Master #1|-|Dragon companero de Daenerys Targaryen
+Vhagar|dragon|Targaryen|0|-|-|-|-|Dragón montado por Visenya Targaryen
+Vaelora Targaryen|persona|Targaryen|1|Maegor Targaryen,Serenya Velaryon|Aenar Targaryen|-|Aerion Velaryon|Princesa olvidada de la rama menor Targaryen
+Tywin Lannister|persona|Lannister|0|-|-|-|-|Patriarca de la Casa Lannister, estratega implacable
+Tyrion Lannister|persona|Lannister|0|Tywin Lannister|Cersei Lannister,Jaime Lannister|Shae,Tywin Lannister|Sansa Stark|Enano inteligente y sarcastico de la Casa Lannister
+Thoros of Myr|persona|-|0|-|-|Beric Dondarrion|-|Sacerdote rojo que resucita al Señor Beric
+The Night King|criatura|-|0|-|-|Three-Eyed Raven,Viserion,Ned Umber,Theon Greyjoy|-|Lider de los Caminantes Blancos y del ejercito de los muertos
+Talisa Maegyr|persona|-|0|-|-|-|Robb Stark|Esposa de Robb Stark asesinada en la Boda Roja
+Sunfyre|dragon|Targaryen|0|-|-|-|-|Dragon dorado montado por Aegon II Targaryen
+Summer|lobo|Stark|0|-|Grey Wind,Lady,Nymeria,Shaggydog,Ghost|Catspaw Assassin|-|Lobo huargo companero de Bran Stark
+Stannis Baratheon|persona|Baratheon|0|-|Robert Baratheon,Renly Baratheon|Gordy,Simpson|Selyse Baratheon|Aspirante al Trono de Hierro
+Shae|persona|-|0|-|-|-|Tyrion Lannister|Amante de Tyrion
+Ser Pounce|criatura|-|0|-|-|-|-|Gato real de Tommen Baratheon
+Sandor Clegane|persona|-|0|-|Gregor Clegane|Mycah,Kings Landing Rioter #1,Kings Landing Rioter #2,Kings Landing Rioter #3,Beric Dondarrion,Frey Soldier #2,Lowell,Dying Man,Biter,Steve,Riddell,Gatins,Morgan,Lem Lemoncloak,Gregor Clegane,Sandor Clegane|-|Guerrero brutal conocido como el Perro
+Samwell Tarly|persona|-|0|Randyll Tarly,Melessa Tarly|Dickon Tarly,Talla Tarly|White Walker,Thenn Warg|Gilly|Erudito de la Guardia de la Noche, amigo de Jon Snow
+Ros|persona|-|0|-|-|-|-|Prostituta de Desembarco del Rey
+Rickon Stark|persona|Stark|1|Eddard Stark,Catelyn Stark|Robb,Sansa,Arya,Bran|Smalljon Umber|-|Hijo menor de los Stark
+Rhaegar Targaryen|persona|Targaryen|1|Aerys II Targaryen,Rhaella Targaryen|Viserys Targaryen,Daenerys Targaryen|-|Lyanna Stark|Principe heredero de la Casa Targaryen
+Rhaegal|dragon|Targaryen|0|-|Drogon,Viserion|Pyat Pree,Great Master #1|-|Dragon companero de Daenerys Targaryen
+Qyburn|persona|-|0|-|-|-|-|Maestro expulsado que revive a Gregor Clegane
+Petyr Baelish|persona|-|0|-|-|Joffrey Baratheon,Dontos Hollard,Lysa Arryn|Lysa Arryn|Maquinador politico conocido como Menique
+Old Nan|persona|-|0|-|-|-|-|Anciana narradora de historias en Invernalia
+Nyra|lobo|Stark|0|-|Ghost,Summer|-|-|Lobo huargo de la era antigua
+Myrcella Baratheon|persona|Baratheon|0|Cersei Lannister,Robert Baratheon|Joffrey Baratheon,Tommen Baratheon|-|-|Hija de Cersei y Robert
+Melisandre|persona|-|0|-|-|Renly Baratheon,Axell Florent,Mance Rayder,Shireen Baratheon|-|Sacerdotisa roja con poderes magicos
+Maester Pycelle|persona|-|0|-|-|-|-|Consejero del Trono de Hierro
+Lyanna Mormont|persona|Mormont|0|-|-|-|-|Lider joven y valiente de la Casa Mormont
+Lady|lobo|Stark|0|-|Grey Wind,Nymeria,Summer,Shaggydog,Ghost|-|-|Lobo huargo companero de Sansa Stark
+Jorah Mormont|persona|Mormont|0|Jeor Mormont|-|Qotho,Norvoshi Pit Fighter,Meereenese Champion|-|Caballero exiliado que sirve a Daenerys Targaryen
+Jaqen H’ghar|persona|-|0|-|-|-|-|Asesino sin rostro que entrena a Arya Stark
+Jaime Lannister|persona|Lannister|0|Tywin Lannister|Cersei Lannister,Tyrion Lannister|Aerys II Targaryen,Jory Cassel,Alton Lannister,Torrhen Karstark,Olenna Tyrell,Euron Greyjoy|-|Caballero de la Guardia Real, conocido como el Matarreyes
+Hot Pie|persona|-|0|-|-|-|-|Panadero amigo de Arya Stark
+Harwin Strong|persona|Strong|0|Lyonel Strong|Larys Strong|-|Rhaenyra Targaryen|Padre de los hijos de Rhaenyra Targaryen
+Grey Wind|lobo|Stark|0|-|Lady,Nymeria,Summer,Shaggydog,Ghost|Rennick|-|Lobo huargo companero de Robb Stark
+Gregor Clegane|persona|-|0|-|Sandor Clegane|-|-|Guerrero brutal conocido como la Montaña
+Gilly|persona|-|0|-|-|-|Samwell Tarly|Madre joven del Pueblo Libre
+Gendry|persona|Baratheon|0|Robert Baratheon|-|Kevin Eldon,Laurence Spellman|-|Herrero bastardo de Robert Baratheon
+Edmure Tully|persona|Tully|0|Hoster Tully|Catelyn Stark,Lysa Arryn|-|Roslin Frey|Senor de Aguasdulces
+Daenerys Targaryen|persona|Targaryen|0|Aerys II Targaryen,Rhaella Targaryen|Rhaegar Targaryen,Viserys Targaryen|Khal Drogo,Mirri Maz Duur,Doreah,Xaro Xhoan Daxos,Khal Rhalko,Khal Brozho,Khal Qorro,Khal Forzho,Khal Moro,Dothraki Bloodrider #1,Dothraki Bloodrider #2,Randyll Tarly,Dickon Tarly,Eleanor,Eleanor's Daughter,Lord Varys|Khal Drogo|Ultima descendiente de la Casa Targaryen, madre de dragones
+Criston Cole|persona|Cole|0|-|-|-|-|Caballero y Lord Comandante de la Guardia Real
+Coldhands|criatura|-|0|-|-|Benjen Stark|-|Guía misterioso del norte que ayuda a Bran
+Catelyn Stark|persona|Stark,Tully|0|Hoster Tully|Lysa Arryn,Edmure Tully|Joyeuse Erenford|Eddard Stark,Brandon Stark|Matriarca de la Casa Stark, protectora de sus hijos
+Brienne of Tarth|persona|-|0|-|-|Soldier Tom,Stannis Baratheon,Bolton Officer|-|Guerrera leal y honorable de Tarth
+Bran Stark|persona|Stark|1|Eddard Stark,Catelyn Stark|Robb Stark,Sansa Stark,Arya Stark,Rickon Stark|-|-|Heredero de la Casa Stark con poderes misticos como el Cuervo de Tres Ojos
+Beric Dondarrion|persona|-|0|-|-|Lannister Soldier #3|-|Caballero resucitado por Thoros de Myr
+Balon Greyjoy|persona|Greyjoy|0|-|Yara Greyjoy,Theon Greyjoy|-|-|Rey de las Islas del Hierro
+Balerion|dragon|Targaryen|0|-|-|-|-|Dragón negro montado por Aegon el Conquistador
+Arya Stark|persona|Stark|0|Eddard Stark,Catelyn Stark|Robb Stark,Sansa Stark,Bran Stark,Rickon Stark|Red Keep Stableboy,Frey Soldier #1,Polliver,Rorge,Ghita,Meryn Trant,The Waif,Black Walder Rivers,Lothar Frey,Walder Frey,Petyr Baelish,The Night King,White Walker,Viserion|-|Joven valiente de la Casa Stark, entrenada como asesina
+Arrax|dragon|Targaryen|0|-|-|-|-|Dragon joven montado por Lucerys Velaryon
+Aemond Targaryen|persona|Targaryen|0|Maekar I Targaryen|-|-|-|Maestre de la Guardia de la Noche

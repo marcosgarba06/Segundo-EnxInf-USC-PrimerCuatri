@@ -23,6 +23,13 @@ void listadoPersonajes(TABB arbol);
 */
 void eliminarPersonaje(TABB *arbol);
 
+
+/*
+* Lista todos los personajes de un tipo concreto de la base de datos del ABB
+* @param arbol Arbol donde se encuentran los personajes
+*/
+void listadoTipo(TABB arbol);
+
 //FUNCIONES DE GESTIÓN DE ARCHIVOS DE JUEGO DE TRONOS
 
 /*
@@ -39,6 +46,14 @@ void cargar_archivo(TABB *arbol, int argc, char **argv);
 * @param argv Vector de cadenas con los argumentos de la linea de comandos
 */
 void imprimirArchivo(TABB arbol, int argc, char **argv);
+
+//FUNCION PARA BUSCAR EN EL ARBOL
+/*
+* Funcion que busca un personaje en la base de datos del ABB e imprime su informacion
+* @param arbol Arbol donde se encuentran los personajes
+*/
+void buscarPersonaje(TABB arbol);
+
 
 
 #endif /* FUNCIONESJDT_H */
