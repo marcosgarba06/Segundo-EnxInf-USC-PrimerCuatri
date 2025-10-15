@@ -6,12 +6,7 @@
 #include "abb.h"
 #include "lista.h"
 #define NAME_LENGTH 50
-//Opcion A/a Anadir personaje
-//Preguntar por el nombre, tipo, casa, es familia real, y varias listas: padres, hermanos
-//personas que ha asesinado, personas que ha sido pareja
-//Para cada lista se preguntará el nombre del personaje, finalizando el proceso de 
-//rellenarla cuando el nombre del personaje sea "fin". Cuando exista algún campo desconocido, 
-//el usuario tecleará el  carácter ’-’.
+
 
 //struct para el vector de structs de la familia numerosa
 typedef struct {
@@ -224,6 +219,10 @@ void cargar_archivo(TABB *arbol, int argc, char **argv){
     }
 
     FILE *f = fopen(argv[2], "r"); //Abrir archivo en modo lectura
+    if (f == NULL) {
+        printf("No se ha podido abrir el archivo %s. El programa continuará con una base de datos vacía.\n\n", argv[2]);
+        return;
+    }
     
     char line[1024]; //Variable para leer la linea del archivo
 
@@ -300,11 +299,16 @@ void imprimirListaArch(TLISTA list, FILE *f){
 } 
 
 //REVISAR PARA QUE NO IMPRIMA UN SALTO DE LINEA SI ES EL ULTIMO PERSONAJE
-void imprimirPersonajeArch(TIPOELEMENTOABB personaje, FILE *f){
+void imprimirPersonajeArch(TIPOELEMENTOABB personaje, FILE *f, int *primero){
+    if (!(*primero)) //Si no es el primer personaje, poner un salto de linea antes
+        fprintf(f, "\n");
+    *primero = 0;
+
     fprintf(f, "%s|%s|%s|%hu|", personaje.name, personaje.character_type, personaje.house, personaje.real);
     
     //Imprimir listas, si son vacias imprimir "-|", si no imprimir la lista con la funcion imprimirListaArch
     
+        *primero = 0; //Si es el primer personaje, cambiar el valor de primero a 0 para que los siguientes personajes no lo sean
     if (!esListaVacia(personaje.parents)) //lista padres
         imprimirListaArch(personaje.parents, f);
     else
@@ -325,20 +329,20 @@ void imprimirPersonajeArch(TIPOELEMENTOABB personaje, FILE *f){
     else
         fprintf(f, "-|");
 
-    fprintf(f, "%s\n", personaje.description); //Descripcion al final y salto de linea
+    fprintf(f, "%s", personaje.description); //Descripcion al final y salto de linea
 }
 
 //Imprime en el archivo todos los personajes del arbol
-void imprimirArchivoAux(TABB arbol, FILE *f){
+void imprimirArchivoAux(TABB arbol, FILE *f, int *primero){
     if (esAbbVacio(arbol))
         return;
 
     TIPOELEMENTOABB elemen;
 
-    imprimirArchivoAux(izqAbb(arbol), f);
-    imprimirArchivoAux(derAbb(arbol), f);
+    imprimirArchivoAux(izqAbb(arbol), f, primero);
+    imprimirArchivoAux(derAbb(arbol), f, primero);
     leerElementoAbb(arbol, &elemen);
-    imprimirPersonajeArch(elemen, f);
+    imprimirPersonajeArch(elemen, f, primero);
 }
 
 //Funcion que imprime en el archivo los personajes de la base de datos del ABB
@@ -353,7 +357,8 @@ void imprimirArchivo(TABB arbol,  int argc, char **argv){
         argv[2] = filename;
     }
     FILE *f = fopen(argv[2], "w"); //Abrir archivo en modo escritura
-    imprimirArchivoAux(arbol, f);
+    int primero = 1;
+    imprimirArchivoAux(arbol, f, &primero);
     fclose(f);
 }
 

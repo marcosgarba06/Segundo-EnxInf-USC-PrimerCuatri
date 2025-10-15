@@ -6,12 +6,11 @@
 
 int main(int argc, char* argv[])
 {
-    int pid[2];
+    int pid[2]; //array para gardar os PIDs dos fillos
 
     pid[0] = fork(); //crear fillo1 (zombie)
 
-    // Se estamos no primeiro fillo
-    if (pid[0] == 0)
+    if (pid[0] == 0) //Esto e verdadeiro para o fillo e non para o pai
     {
         //matar fillo1 para facelo zombie
         printf("Proceso fillo morrendo...\n");
@@ -19,10 +18,10 @@ int main(int argc, char* argv[])
     }
     else
     {
-        sleep(10); //para que tempo a facer ps e ver que pasa
+        sleep(10); //para que tempo a facer ps e ver que pasa e para facer o fillo zombie
         int status;
 
-        wait(&status); //esperar polo fillo1
+        wait(&status); //esperar polo fillo1 ata ter o status
 
         printf("O proceso zombi saiu con exit(%d)\n", WEXITSTATUS(status)); //imprimir o exit do fillo1
 
@@ -38,7 +37,7 @@ int main(int argc, char* argv[])
         else
         {
             printf("Proceso pai morrendo\n");
-            return 0;
+            return 0; //proceso pai morre inmediatamente e o fillo2 queda orfo
         }
     }
 

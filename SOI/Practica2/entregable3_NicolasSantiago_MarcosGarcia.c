@@ -33,7 +33,7 @@ void imprimirMedia(const char *arquivo, double val, int media)
     fclose(f);
 }
 
-// TODO: Para Marcos
+
 double calcularTangente(int rangInf, int rangSup)
 {
     double suma = 0.0;
@@ -128,9 +128,9 @@ int main(int argc, char const *argv[])
     // Calcular o overhead de gettimeofday()
     gettimeofday(&inicio, NULL);
     gettimeofday(&fin, NULL);
-    double overhead = (fin.tv_sec - inicio.tv_sec)*1e6 + fin.tv_usec - inicio.tv_usec;
+    double overhead = (fin.tv_sec - inicio.tv_sec)*1e6 + fin.tv_usec - inicio.tv_usec; //convertir a microsegundos
 
-    pid_t proceso[P];
+    pid_t proceso[P]; //Array para guardar los pids de los hijos
 
     double resultado = 123;
 
@@ -142,18 +142,22 @@ int main(int argc, char const *argv[])
         // Crear el hijo y entrar en su rama
         // El proceso padre solo creará más hijos
         proceso[i] = fork();
-        if (proceso[i] == 0){
+        if (proceso[i] == 0){ //Solo se ejecuta con los hijos
             // Coger el tiempo de inicio
             gettimeofday(&inicio, NULL);
             // Calcular la raiz cuadrada de la tangente
+            
+            //Si i=0, [1, N/P]
+            //Si i=1, [N/P + 1, 2N/P]
             resultado = calcularTangente(i*(N/P) + 1, (i+1)*(N/P));
+
             // Coger el tiempo de fin
             gettimeofday(&fin, NULL);
             
-            tiempo = (fin.tv_sec - inicio.tv_sec)*1e6 + fin.tv_usec - inicio.tv_usec - overhead;
+            tiempo = (fin.tv_sec - inicio.tv_sec)*1e6 + fin.tv_usec - inicio.tv_usec - overhead; //convertir a microsegundos
             printf("Resultado do cáculo do fillo PID %d: %f [(tan(sqrt(%d)), (tan(sqrt(%d))]\n",getpid() , resultado, i*(N/P) + 1, (i+1)*(N/P));
             // Calcular el tiempo real de ejecución sin el overhead en este
-            imprimirArchivo(SALIDA_ARCHIVO, getpid(), resultado, tiempo); //falta engadir o argumento de tempo cando este feita esa parte
+            imprimirArchivo(SALIDA_ARCHIVO, getpid(), resultado, tiempo);
             // Salir del programa para evitar que el hijo itere el bucle y haga su propio fork()
             exit(EXIT_SUCCESS);
         }
@@ -180,6 +184,7 @@ int main(int argc, char const *argv[])
     {
         // Coger los tiempos y calcular
         gettimeofday(&inicio, NULL);
+        // Calcula desde (N - N%P + 1) hasta N (números sobrantes)
         // Debe ser +1 ya que si no, estaríamos calculando dos veces el número N - (N%P)
         // Ejemplo: N = 11, P = 2 sería [1,5], [6,10] y [N - (N%P), N] es [10, 11]
         resultado = calcularTangente(N - (N%P) + 1, N);
@@ -190,7 +195,7 @@ int main(int argc, char const *argv[])
         exit(EXIT_SUCCESS);
     }
 
-    
+    //Proceso P+2 para hacer el calcilo total
     proceso[1] = fork();
     if (proceso[1] == 0)
     {
@@ -206,11 +211,12 @@ int main(int argc, char const *argv[])
         exit(EXIT_SUCCESS);
     }
 
+    //Proceso P+1 paea calcular la suma de los resultados
     proceso[2] = fork();
-    if (proceso[2] == 0)
+    if (proceso[2] == 0) //si es el proceso hijo
     {
         gettimeofday(&inicio, NULL);
-        // P + 1 para recojer al del módulo también
+        // P + 1 para recoger al del módulo también
         calcularSuma(SALIDA_ARCHIVO, P + 1, &resultado, &tiempo);
         gettimeofday(&fin, NULL);
         // resultado/N para saber la media
