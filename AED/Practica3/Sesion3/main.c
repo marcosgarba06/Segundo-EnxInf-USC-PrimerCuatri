@@ -23,7 +23,7 @@ int main(int argc, char** argv)
         printf("B/b. Buscar personaje por nombre\n");
         printf("T/t Listar personaje por tipo\n");
         printf("M/m. Modificar personaje\n");
-        printf("F/f. Buscar la familia mas numerosa:\n");
+        printf("F/f. Buscar la familia mas numerosa\n");
         printf("E/e. Eliminar personaje\n");
         printf("S/s. Salir del programa de JdT\n");
         printf("\n--------------------------------\n");

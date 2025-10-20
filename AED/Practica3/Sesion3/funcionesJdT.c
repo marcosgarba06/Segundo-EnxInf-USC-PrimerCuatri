@@ -585,7 +585,7 @@ int _esFamiliaRepetida(FAMILIANUMEROSA fam, TLISTA padres, TLISTA hermanos){
     else return 1;
 }
 
-void _familiaNumerosaAVectorStruct(TABB arbol, int max, FAMILIANUMEROSA *familias, int *numFamilas){
+void _familiaNumerosaAVectorStruct(TABB arbol, int max, FAMILIANUMEROSA *familias, int *numFamilas, char nombres[][NAME_LENGTH]){
     if(esAbbVacio(arbol)) {
         return;
     }else{
@@ -611,12 +611,13 @@ void _familiaNumerosaAVectorStruct(TABB arbol, int max, FAMILIANUMEROSA *familia
                 copiarLista(elemen.parents, &fam.parents);
                 copiarLista(elemen.siblings, &fam.siblings);
                 familias[*numFamilas] = fam;
+                strncpy(nombres[*numFamilas], elemen.name, NAME_LENGTH); //Copiar nombre al array
                 (*numFamilas)++;
             }
         }
     }
-    _familiaNumerosaAVectorStruct(izqAbb(arbol), max, familias, numFamilas); //izquierda
-    _familiaNumerosaAVectorStruct(derAbb(arbol), max, familias, numFamilas); //derecha
+    _familiaNumerosaAVectorStruct(izqAbb(arbol), max, familias, numFamilas, nombres); //izquierda
+    _familiaNumerosaAVectorStruct(derAbb(arbol), max, familias, numFamilas, nombres); //derecha
 }
 
 //FALTA COMPROBAR QUE SON DE TIPO PERSONA
@@ -624,9 +625,9 @@ void familiaNumerosa(TABB arbol){
     int max = 0;
     _buscarMayorFamilia(arbol, &max);
     FAMILIANUMEROSA familias[30]; //Vector de structs para almacenar las familias numerosas
-    char nombres[30][NAME_LENGTH];
     int numFamilas = 0;
-    _familiaNumerosaAVectorStruct(arbol, max, familias, &numFamilas);
+    char nombres[30][NAME_LENGTH]; //Array para almacenar los nombres de los personajes con la familia numerosa
+    _familiaNumerosaAVectorStruct(arbol, max, familias, &numFamilas, nombres);
 
     //Imprimir las familias numerosas
     if (numFamilas == 0){
@@ -645,7 +646,7 @@ void familiaNumerosa(TABB arbol){
         _imprimirLista(familias[i].parents);
         printf("\nHermanos:");
         //Hacer que imprima el personaje con el que se ha encontrado la lista al final
-        TPOSICION pos;
+        TPOSICION pos = primeroLista(familias[i].siblings);
         TIPOELEMENTOLISTA elemento;
         int primero = 1;  // Variable flag para el primer elemento
         while (pos != finLista(familias[i].siblings)){
