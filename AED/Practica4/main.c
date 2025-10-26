@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "funciones.h"
+#include "JdTMap.h"
 
 /*
  * Programa que muestra el uso del TAD grafo de números enteros

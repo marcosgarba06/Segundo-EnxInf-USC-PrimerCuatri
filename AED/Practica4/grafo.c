@@ -1,14 +1,14 @@
 #include "grafo.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 /////////////////////////////////////////////////////////// TIPOS DE DATOS
 
 // Estructura privada
 struct tipografo {
     int N; //número de vértices del grafo
     tipovertice VERTICES[MAXVERTICES]; //vector de vértices
-    int A[MAXVERTICES][MAXVERTICES]; //matriz de adyacencia
+    tipoarco A[MAXVERTICES][MAXVERTICES]; //matriz de adyacencia cambiada de int a tipoarco para poder almacenar pesos y tipos de conexión
 };
 
 //////////////////////////////////////////////////////////////// FUNCIONES
@@ -19,8 +19,9 @@ struct tipografo {
  * y 1 en otro caso.
  */
 int _comparar_vertices(tipovertice V1, tipovertice V2){
-	return V1==V2 ? 0 : 1;
+	return (strcmp(V1.name, V2.name) == 0 && strcmp(V1.region, V2.region) == 0) ? 0 : 1;
 }
+
 
 //Creación del grafo con 0 nodos
 void crear_grafo(grafo *G) {
@@ -63,9 +64,13 @@ int insertar_vertice(grafo *G, tipovertice Vert) {
    
     (*G)->N++;
     (*G)->VERTICES[((*G)->N) - 1] = Vert;
+
+    //Al inicializar el nuevo vértice, ponemos a -1 la distancia y '\0' el tipo de conexión
     for (i = 0; i < (*G)->N; i++) {
-        (*G)->A[i][((*G)->N) - 1] = 0;
-        (*G)->A[((*G)->N) - 1][i] = 0;
+        (*G)->A[i][((*G)->N) - 1].distancia = 0.0;
+        (*G)->A[i][((*G)->N) - 1].tipoconexion = 0;
+        (*G)->A[((*G)->N) - 1][i].distancia = 0.0;
+        (*G)->A[((*G)->N) - 1][i].tipoconexion = 0;
     }
 	return (*G)->N-1;
 }
@@ -95,18 +100,50 @@ void borrar_vertice(grafo *G, tipovertice Vert) {
 }
 
 //Crea el arco de relación entre VERTICES(pos1) y VERTICES(pos2)
-void crear_arco(grafo *G, int pos1, int pos2) {
-    (*G)->A[pos1][pos2] = 1;
+void crear_arco(grafo *G, int pos1, int pos2, float distancia, char tipo) {
+    //(*G)->A[pos1][pos2] = 1;
+
+    if (tipo != 't' && tipo != 'm' && tipo != 'T' && tipo != 'M') return; //si el tipo no es válido, no hacemos nada
+    // Normalizamos tipo a minúscula
+    if (tipo == 'T') tipo = 't';
+    if (tipo == 'M') tipo = 'm';
+
+    (*G)->A[pos1][pos2].distancia = distancia;
+    (*G)->A[pos1][pos2].tipoconexion = tipo;
+
+    //Al ser unn grafo no dirigido, el arco es bidireccional, es decir hay arco de pos1 a pos2 y de pos2 a pos1, por lo que 
+    //la matriz es simétrica y se acrtualizan ambas posiciones
+
+    (*G)->A[pos2][pos1].distancia = distancia;
+    (*G)->A[pos2][pos1].tipoconexion = tipo;
 }
 
 //Borra el arco de relación entre VERTICES(pos1) y VERTICES(pos2)
 void borrar_arco(grafo *G, int pos1, int pos2) {
-    (*G)->A[pos1][pos2] = 0;
+    //(*G)->A[pos1][pos2] = 0;
+    (*G)->A[pos1][pos2].distancia = 0.0;
+    (*G)->A[pos1][pos2].tipoconexion = 0;
+
+    //Al ser no dirigido se borran los arcos en ambas direcciones
+    (*G)->A[pos2][pos1].distancia = 0.0;
+    (*G)->A[pos2][pos1].tipoconexion = 0;
+
+
 }
 
 //Devuelve 1 si VERTICES(pos1) y VERTICES(pos2) son vértices adyacentes
 int son_adyacentes(grafo G, int pos1, int pos2) {
-    return (G->A[pos1][pos2]);
+    return (G->A[pos1][pos2].tipoconexion != 0);
+}
+
+// Devuelve la distancia entre dos VERTICES
+float distancia(grafo G, int pos1, int pos2) {
+    return G->A[pos1][pos2].distancia;
+}
+
+// Devuelve el tipo de conexión entre dos VERTICES
+char tipoconexion(grafo G, int pos1, int pos2) {
+    return G->A[pos1][pos2].tipoconexion;
 }
 
 //Destruye el grafo

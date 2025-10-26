@@ -3,6 +3,7 @@
 #define GRAFO_H
 
 #define MAXVERTICES 100 /*maximo numero de nodos*/
+#define MAX_NAME 100
 
 /*
  * Implementación estática del TAD grafo con una matriz
@@ -12,7 +13,17 @@
 /////////////////////////////////////////////////////////// TIPOS DE DATOS
 
 //Información que se almacena en cada vértice
-typedef int tipovertice;
+//Ahora tipovertice es una estructura con el nombre y la región a la que pertenece
+typedef struct{
+    char name[MAX_NAME];
+    char region[MAX_NAME];
+} tipovertice;
+
+//Estructura en la que se almcena la información de cada arco (distancia en km y tipo de conexión)
+typedef struct {
+    float distancia; //distancia entre vértices km
+    char tipoconexion; // 't' (tierra), 'm' (mar), '\0' (ninguna conexión)
+} tipoarco;
 
 typedef struct tipografo * grafo;
 
@@ -41,13 +52,19 @@ int insertar_vertice(grafo *G, tipovertice Vert);
 void borrar_vertice(grafo *G, tipovertice Vert);
 
 //Crea el arco de relación entre VERTICES(pos1) y VERTICES(pos2)
-void crear_arco(grafo *G, int pos1, int pos2);
+void crear_arco(grafo *G, int pos1, int pos2, float distancia, char tipo);
 
 //Borra el arco de relación entre VERTICES(pos1) y VERTICES(pos2)
 void borrar_arco(grafo *G, int pos1, int pos2);
 
 //Devuelve 1 si VERTICES(pos1) y VERTICES(pos2) son vértices adyacentes
 int son_adyacentes(grafo G, int pos1, int pos2);
+
+// Devuelve la distancia entre dos VERTICES
+float distancia(grafo G, int pos1, int pos2);
+
+// Devuelve el tipo de conexión entre dos VERTICES
+char tipoconexion(grafo G, int pos1, int pos2);
 
 //Destruye el grafo
 void borrar_grafo(grafo *G);

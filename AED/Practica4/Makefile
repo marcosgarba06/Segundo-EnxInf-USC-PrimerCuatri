@@ -10,10 +10,10 @@ INCLUDES = -I $(HEADER_FILES_DIR)
 OUTPUT = jdt
 
 #ficheros .h.  Si hay varios, se precede cada uno con $(HEADER_FILES_DIR)/
-LIB_HEADERS = $(HEADER_FILES_DIR)/funciones.h $(HEADER_FILES_DIR)/grafo.h
+LIB_HEADERS = $(HEADER_FILES_DIR)/JdTMap.h $(HEADER_FILES_DIR)/grafo.h
 
 #FUENTES: todos los archivos .c necesarios
-SRCS = main.c grafo.c funciones.c
+SRCS = main.c grafo.c JdTMap.c
 
 #ficheros .o: todos los .o con un analogo .c en SRCS
 OBJS = $(SRCS:.c=.o)
