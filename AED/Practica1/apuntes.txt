@@ -1,0 +1,5 @@
+1. Hay que cambiar el tipoelemen en la lines typedef int tipoelem;
+tanto en abin.c y en abin.h
+2. Para insertar la raiz puedo usar tanto insertar izquierda como insertar derecha
+3. -Imprimir los elementos del árbol utilizando el recorrido inorden no recursivo
+para esto imprimir el arbol y ya
