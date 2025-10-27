@@ -19,7 +19,7 @@ struct tipografo {
  * y 1 en otro caso.
  */
 int _comparar_vertices(tipovertice V1, tipovertice V2){
-	return (strcmp(V1.name, V2.name) == 0 && strcmp(V1.region, V2.region) == 0) ? 0 : 1;
+	return (strcmp(V1.name, V2.name) == 0) ? 0 : 1;
 }
 
 

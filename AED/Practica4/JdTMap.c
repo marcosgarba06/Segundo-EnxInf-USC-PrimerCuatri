@@ -54,8 +54,6 @@ void nuevo_arco(grafo *G) {
     //Vértice origen del arco
     printf("Introduce nombre de la ciudad origen: ");
     scanf(" %[^\n]", v1.name);
-    printf("Introduce región origen: ");
-    scanf(" %[^\n]", v1.region);
     
     if (!existe_vertice(*G, v1)) {
         printf("La ciudad %s (%s) no existe en el grafo\n", v1.name, v1.region);
@@ -65,8 +63,10 @@ void nuevo_arco(grafo *G) {
     //Vértice destino del arco
     printf("Introduce nombre de la ciudad destino: ");
     scanf(" %[^\n]", v2.name);
+    
+    /*
     printf("Introduce región destino: ");
-    scanf(" %[^\n]", v2.region);
+    scanf(" %[^\n]", v2.region);*/
     
     if (!existe_vertice(*G, v2)) {
         printf("La ciudad %s (%s) no existe en el grafo\n", v2.name, v2.region);
@@ -100,8 +100,10 @@ void eliminar_arco(grafo *G) {
     //Vértice origen del arco
     printf("Introduce nombre de la ciudad origen: ");
     scanf(" %[^\n]", v1.name);
+
+    /*
     printf("Introduce región origen: ");
-    scanf(" %[^\n]", v1.region);
+    scanf(" %[^\n]", v1.region);*/
     
     if (!existe_vertice(*G, v1)) {
         printf("La ciudad %s (%s) no existe en el grafo\n", v1.name, v1.region);
