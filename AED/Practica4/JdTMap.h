@@ -19,6 +19,8 @@ void eliminar_arco(grafo *G);
 //Opción i del menú, imprimir el grafo
 void imprimir_grafo(grafo G);
 
+//Función para leer el archivo e inicializar el grafo
+void leerArch(grafo *G, const char* filename);
 
 #endif	/* FUNCIONES_H */
 

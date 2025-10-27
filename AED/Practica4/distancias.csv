@@ -1,0 +1,41 @@
+Lannisport,The Westernlands,Casterly Rock,The Westernlands,64,land
+Winterfell,The North,Harrenhal,The Riverlands,1870,land
+Cerwyn,The North,Winterfell,The North,160,land
+Deepwood Motte,The North,Winterfell,The North,560,land
+Deepwood Motte,The North,Bear Island,The North,225,sea
+Riverrun,The Riverlands,Harrenhal,The Riverlands,410,land
+Riverrun,The Riverlands,Casterly Rock,The Westernlands,680,land
+Riverrun,The Riverlands,Winterfell,The North,2290,land
+Moat Cailin,The North,Harrenhal,The Riverlands,930,land
+Moat Cailin,The North,Cerwyn,The North,420,land
+Old Town,The Reach,Highgarden,The Reach,530,land
+White Harbor,The North,Winterfell,The North,550,land
+White Harbor,The North,Moat Cailin,The North,600,land
+The Dreadfort,The North,Winterfell,The North,560,land
+The Dreadfort,The North,Cerwyn,The North,150,land
+The Dreadfort,The North,Deepwood Motte,The North,500,land
+Seagard,The Riverlands,Riverrun,The Riverlands,400,land
+Seagard,The Riverlands,Moat Cailin,The North,400,land
+Pyke,Iron Islands,Lannisport,The Westernlands,1050,sea
+Pyke,Iron Islands,Bear Island,The North,2415,sea
+Pyke,Iron Islands,Seagard,The Riverlands,500,sea
+King's Landing,The Crownlands,Harrenhal,The Riverlands,6003,land
+King's Landing,The Crownlands,Casterly Rock,The Westernlands,1340,land
+King's Landing,The Crownlands,Winterfell,The North,2300,land
+King's Landing,The Crownlands,Riverrun,The Riverlands,1300,land
+King's Landing,The Crownlands,Highgarden,The Reach,1220,land
+Storm's End,The Stormlands,King's Landing,The Crownlands,630,land
+Duskendale,The Crownlands,Riverrun,The Riverlands,960,land
+Dragonstone,The Crownlands,Storm's End,The Stormlands,250,sea
+Dragonstone,The Crownlands,Duskendale,The Crownlands,180,sea
+Castle Black,The North,Winterfell,The North,1050,land
+The Arbor,The Reach,Old Town,The Reach,480,sea
+Eastwatch-by-the-Sea,The North,White Harbor,The North,620,sea
+Eastwatch-by-the-Sea,The North,Castle Black,The North,300,land
+Sunspear,Dorne,Old Town,The Reach,1200,sea
+Sunspear,Dorne,King's Landing,The Crownlands,1800,sea
+Sunspear,Dorne,Storm's End,The Stormlands,1400,sea
+Sunspear,Dorne,The Arbor,The Reach,1100,sea
+Saltpans,Riverlands,Harrenhal,The Riverlands,200,land
+Saltpans,Riverlands,Seagard,The Riverlands,600,land
+The Eyrie,The Vale,Saltpans,Riverlands,850,land

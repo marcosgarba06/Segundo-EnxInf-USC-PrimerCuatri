@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "JdTMap.h"
-
+#define FILE_NAME "distancias.csv"
 /*
  * Programa que muestra el uso del TAD grafo de números enteros
  */
@@ -13,6 +13,10 @@ int main(int argc, char** argv) {
 
     //Creo el grafo
     crear_grafo(&G);
+
+    //Leo el archivo y creo el grafo
+    leerArch(&G, FILE_NAME);
+
     do {
         printf("\n\na. Insertar nuevo vertice\n");
         printf("b. Eliminar vertice\n");

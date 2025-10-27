@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "grafo.h"
 
 //FUNCIONES DEL PROGRAMA DE PRUEBA DE GRAFOS
@@ -162,3 +163,41 @@ void imprimir_grafo(grafo G) {
     }
 }
 
+//Función para leer el archivo e inicializar el grafo
+void leerArch(grafo *G, const char* filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("No se pudo abrir el archivo %s\n", filename);
+        return;
+    }
+
+    char line[1024];
+    int n;
+    while (fgets(line, sizeof(line), file)) {
+        tipoarco arco;
+        tipovertice v1, v2;
+        char tipo[32];
+        n = sscanf(line, " %[^,],%[^,],%[^,],%[^,],%f,%s", v1.name, v1.region, v2.name, v2.region, &arco.distancia, tipo);
+        
+        if (n !=6){
+            printf("Error al leer la línea: %s\n", line);
+            continue;
+        }
+        
+        // Comparar que el tipo de conexión es válido
+        if (strcmp(tipo, "land") == 0)
+            arco.tipoconexion = 't';
+        else if (strcmp(tipo, "sea") == 0)
+            arco.tipoconexion = 'm';
+        else {
+            printf("Tipo de conexión desconocido en la línea: %s\n", line);
+            continue;
+        }
+        // Insertar vértices si no existen
+        if (!existe_vertice(*G, v1)) insertar_vertice(G, v1);
+        if (!existe_vertice(*G, v2)) insertar_vertice(G, v2);
+
+        // Crear arco
+        crear_arco(G, posicion(*G, v1), posicion(*G, v2), arco.distancia, arco.tipoconexion);
+    } 
+}
