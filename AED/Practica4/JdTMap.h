@@ -22,5 +22,8 @@ void imprimir_grafo(grafo G);
 //Función para leer el archivo e inicializar el grafo
 void leerArch(grafo *G, const char* filename);
 
+//Función para guardar el grafo en un archivo CSV
+void guardarArch(grafo G, const char* filename);
+
 #endif	/* FUNCIONES_H */
 

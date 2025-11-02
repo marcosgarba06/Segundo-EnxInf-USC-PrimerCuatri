@@ -51,10 +51,12 @@ int main(int argc, char** argv) {
                 printf("Opción equivocada\n");
         }
     } while (opcion != 's');
-
+    
+    //Guardar el grafo en un archivo
+    guardarArch(G, "grafo_actualizado.csv"); // CAMBIAR NOMBRE AL TERMINAR PRUEBAS
+    
     //Al salir, liberamos la memoria del TAD, lo destruimos
     borrar_grafo(&G);
 
     return (EXIT_SUCCESS);
 }
-

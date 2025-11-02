@@ -144,23 +144,34 @@ void imprimir_grafo(grafo G) {
     VECTOR = array_vertices(G);
 
     int i, j;
-    printf("El grafo actual es:\n");
+    printf("A continuación tienes el mapa actual de conexiones de Poniente:\n");
+    printf("        Simbolo -: conexion por tierra\n");
+    printf("        Simbolo ~: conexion por mar\n\n");
+
     for (i = 0; i < N; i++) {
-        //Imprimo el vértice
-        printf("Vertice(%d): %s (Region: %s)\n", i, VECTOR[i].name, VECTOR[i].region);
+        //Imprimo el vértice en el nuevo formato
+        printf("Ciudad(%d): %s - %s\n", i, VECTOR[i].name, VECTOR[i].region);
         //Chequeo sus arcos
-        for (j = 0; j < N; j++)
-            //Si son adyacentes imprimo la relación
-            if (son_adyacentes(G, i, j))
-            {
+        for (j = 0; j < N; j++) {
+            if (son_adyacentes(G, i, j)) {
                 //Calcular distancia y tipo de conexión del arco
                 dist = distancia(G, i, j);
                 tipo = tipoconexion(G, i, j);
 
-                printf("\t %s (Region: %s) --> %s (Region: %s) | Distancia: %f km | Tipo de conexion: %c\n", 
-                VECTOR[i].name, VECTOR[i].region, VECTOR[j].name, VECTOR[j].region, dist, tipo);
+                // Imprimir con el símbolo adecuado y el formato de espacios/flecha solicitado
+                if (tipo == 't') {
+                    // conexión por tierra: --> 
+                    printf("        -->%s - %s (%.2f kms)\n", VECTOR[j].name, VECTOR[j].region, dist);
+                } else if (tipo == 'm') {
+                    // conexión por mar: ~~>
+                    printf("        ~~>%s - %s (%.2f kms)\n", VECTOR[j].name, VECTOR[j].region, dist);
+                } else {
+                    // en caso de valor inesperado, mostrar de forma genérica
+                    printf("        -->%s - %s (%.2f kms) [tipo desconocido]\n", VECTOR[j].name, VECTOR[j].region, dist);
+                }
             }
-    }
+        }
+    } 
 }
 
 //Función para leer el archivo e inicializar el grafo
@@ -200,4 +211,50 @@ void leerArch(grafo *G, const char* filename) {
         // Crear arco
         crear_arco(G, posicion(*G, v1), posicion(*G, v2), arco.distancia, arco.tipoconexion);
     } 
+    fclose(file);
+}
+
+//Función para guardar el grafo en un archivo CSV
+//Escribe cada arista solo una vez (grafo no dirigido): itera con j = i+1
+void guardarArch(grafo G, const char* filename) {
+    // Abrir archivo para escritura y comprobar errores
+    FILE *file = fopen(filename, "w"); 
+    if (file == NULL) {
+        printf("No se pudo abrir el archivo para escribir: %s\n", filename);
+        return;
+    }
+
+    // Obtener el array de vértices y el número de vértices
+    tipovertice *VECTOR = array_vertices(G);
+    int N = num_vertices(G);
+
+    int i, j; // Índices para recorrer los vértices del grafo
+
+    // Recorrer todas las parejas (i,j) de vértices para escribir las aristas
+    // Se recorre de tal forma que j > i para hacer que cada arco al ser no dirigido
+    // se escriba solo una vez en el archivo
+    for (i = 0; i < N; i++) {
+        for (j = i + 1; j < N; j++) {
+            // Comprobamos si existe conexión entre i y j
+            // Si existe, escribimos la línea correspondiente en 
+            // el archivo
+            if (son_adyacentes(G, i, j)) {
+                // Obtener distancia y tipo de conexión para poder
+                // escribirlos en el archivo
+                float dist = distancia(G, i, j);
+                char tipo = tipoconexion(G, i, j);
+
+                // Convertir el tipo de conexión al formato de cadena requerido
+                char *tipocon;
+                if (tipo == 't') tipocon = "land";
+                else if (tipo == 'm') tipocon = "sea";
+                else tipocon= "";
+
+                // Formato: nombre,region,nombre,region,distancia,tipoconexion
+                // Escribimos la distancia con 10 decimales
+                fprintf(file, "%s,%s,%s,%s,%.10f,%s\n", VECTOR[i].name, VECTOR[i].region, VECTOR[j].name, VECTOR[j].region, dist, tipocon);
+            }
+        }
+    }
+    fclose(file);
 }
