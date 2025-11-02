@@ -22,6 +22,9 @@ int main(int argc, char** argv) {
         printf("b. Eliminar vertice\n");
         printf("c. Crear arco\n");
         printf("d. Eliminar arco\n");
+        printf("e. Buscar la ruta mas corta\n");
+        printf("f. Buscar la ruta mas rapida\n");
+        printf("g. Imprimir la infraestructura viaria de tiempo minimo");
         printf("i. Imprimir grafo\n");
         printf("s. Salir\n");
 
@@ -41,11 +44,17 @@ int main(int argc, char** argv) {
             case 'd': case 'D':
                 eliminar_arco(&G);
                 break;
+            case 'e': case 'E':
+                buscar_ruta_mas_corta(&G);
+                break;
+            case 'f': case 'F':
+                break;
+            case 'g': case 'G':
+                break;
             case 'i': case 'I':
                 imprimir_grafo(G);
                 break;
             case 's': case 'S':
-                opcion='s';
                 break;
             default:
                 printf("Opción equivocada\n");

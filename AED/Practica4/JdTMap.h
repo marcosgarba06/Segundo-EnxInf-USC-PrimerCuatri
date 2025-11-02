@@ -25,5 +25,7 @@ void leerArch(grafo *G, const char* filename);
 //Función para guardar el grafo en un archivo CSV
 void guardarArch(grafo G, const char* filename);
 
+void buscar_ruta_mas_corta(grafo *G);
+
 #endif	/* FUNCIONES_H */
 
