@@ -27,5 +27,7 @@ void guardarArch(grafo G, const char* filename);
 
 void buscar_ruta_mas_corta(grafo *G);
 
+void buscar_ruta_mas_rapida(grafo *G);
+
 #endif	/* FUNCIONES_H */
 

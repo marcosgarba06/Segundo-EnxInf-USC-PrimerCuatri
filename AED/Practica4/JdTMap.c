@@ -262,28 +262,46 @@ void guardarArch(grafo G, const char* filename) {
 
 
 /*
- * Inicializa las matrices D (distancias) y P (vértices previos) para el
+ * Inicializa las matrices D (distancias o tiempos) y P (vértices previos) para el
  * algoritmo de Floyd-Warshall según el pseudocódigo proporcionado.
+ * 
+ * MODIFICACIÓN: Esta función ahora puede inicializar la matriz para optimizar
+ * tanto DISTANCIA como TIEMPO según los parámetros recibidos.
  * 
  * Parámetros:
  *   G: grafo del que se extraerá la información de conexiones
- *   D: matriz de distancias mínimas (a inicializar)
+ *   D: matriz de distancias/tiempos mínimos (a inicializar)
  *   P: matriz de vértices previos (a inicializar)
+ *   optimizar_tiempo: flag que indica qué optimizar:
+ *                     0 = optimizar DISTANCIA (usar distancias directamente)
+ *                     1 = optimizar TIEMPO (calcular tiempo = distancia/velocidad)
+ *   vel_tierra: velocidad de desplazamiento por tierra en km/h
+ *               (solo se usa si optimizar_tiempo == 1)
+ *   vel_mar: velocidad de desplazamiento por mar en km/h
+ *            (solo se usa si optimizar_tiempo == 1)
  * 
  * Lógica de inicialización según el pseudocódigo:
- *   D(i,j) = A(i,j)   si A(i,j) ≠ 0 y i ≠ j (existe conexión directa)
- *   D(i,j) = 0        si i = j (distancia de un vértice a sí mismo)
- *   D(i,j) = ∞        en cualquier otro caso (no hay conexión directa)
- * 
- *   P(i,j) = i        si A(i,j) ≠ 0 y i ≠ j (el previo a j desde i es i mismo)
- *   P(i,j) = 0        en cualquier otro caso (no hay camino directo)
+ *   Si optimizar_tiempo == 0 (DISTANCIA):
+ *     D(i,j) = distancia(i,j)   si A(i,j) ≠ 0 y i ≠ j (existe conexión directa)
+ *   
+ *   Si optimizar_tiempo == 1 (TIEMPO):
+ *     D(i,j) = distancia(i,j) / velocidad   si A(i,j) ≠ 0 y i ≠ j
+ *              donde velocidad = vel_tierra si el tipo de conexión es 't'
+ *              donde velocidad = vel_mar si el tipo de conexión es 'm'
+ *   
+ *   En ambos casos:
+ *     D(i,j) = 0        si i = j (coste de un vértice a sí mismo es 0)
+ *     D(i,j) = ∞        en cualquier otro caso (no hay conexión directa)
+ *   
+ *     P(i,j) = i        si A(i,j) ≠ 0 y i ≠ j (el previo a j desde i es i mismo)
+ *     P(i,j) = 0        en cualquier otro caso (no hay camino directo)
  */
-void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
+void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES],
+                       int optimizar_tiempo, float vel_tierra, float vel_mar) {
     // Obtenemos el número total de vértices del grafo
     // Esto nos permite saber hasta dónde iterar en las matrices
     int N = num_vertices(G);
     
-
     int i, j;
     
     // Recorremos todas las filas de las matrices (cada vértice origen)
@@ -292,17 +310,38 @@ void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
         for (j = 0; j < N; j++) {
             
             // CASO 1: La diagonal principal (cuando i == j)
-            // Un vértice tiene distancia 0 a sí mismo
+            // Un vértice tiene distancia/tiempo 0 a sí mismo
             if (i == j) {
-                D[i][j] = 0;      // Distancia de un vértice a sí mismo es 0
+                D[i][j] = 0;      // Coste de un vértice a sí mismo es 0
                 P[i][j] = 0;      // No hay vértice previo (convenio: 0)
             }
             
             // CASO 2: Existe una conexión directa entre i y j (son adyacentes)
-            // Debemos copiar la distancia de la matriz de adyacencia del grafo
+            // Debemos calcular el coste según si optimizamos distancia o tiempo
             else if (son_adyacentes(G, i, j)) {
-                // Copiamos la distancia real del arco entre i y j
-                D[i][j] = distancia(G, i, j);
+                // Obtenemos la distancia en km del arco
+                float dist = distancia(G, i, j);
+                
+                // Dependiendo del modo de optimización, calculamos el coste
+                if (optimizar_tiempo) {
+                    // MODO TIEMPO: Calculamos tiempo = distancia / velocidad
+                    // La velocidad depende del tipo de conexión (tierra o mar)
+                    char tipo = tipoconexion(G, i, j);
+                    
+                    // Si es tierra ('t'), usamos velocidad por tierra
+                    // Si es mar ('m'), usamos velocidad por mar
+                    if (tipo == 't') {
+                        D[i][j] = dist / vel_tierra;  // Tiempo en horas por tierra
+                    } else if (tipo == 'm') {
+                        D[i][j] = dist / vel_mar;     // Tiempo en horas por mar
+                    } else {
+                        // Tipo desconocido, ponemos infinito
+                        D[i][j] = FLT_MAX;
+                    }
+                } else {
+                    // MODO DISTANCIA: Usamos directamente la distancia
+                    D[i][j] = dist;
+                }
                 
                 // El vértice previo a j viniendo desde i es i mismo
                 // Esto significa que para ir de i a j, el paso anterior es i
@@ -322,27 +361,31 @@ void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
         }
     }
     // Al finalizar esta función, tenemos:
-    // - Matriz D: contiene las distancias directas entre vértices adyacentes,
+    // - Matriz D: contiene las distancias/tiempos directos entre vértices adyacentes,
     //             0 en la diagonal, e infinito donde no hay conexión directa
     // - Matriz P: contiene el vértice previo para cada arco directo,
     //             lo que nos permitirá reconstruir los caminos más adelante
 }
 
 /*
- * Calcula las distancias mínimas entre todos los pares de vértices usando
+ * Calcula las distancias/tiempos mínimos entre todos los pares de vértices usando
  * el algoritmo de Floyd-Warshall. Modifica las matrices D y P.
+ * 
+ * NOTA: Esta función funciona igual tanto para distancias como para tiempos,
+ * ya que solo realiza operaciones de comparación y suma. La diferencia está
+ * en cómo se inicializó la matriz D en la función inicializar_floyd.
  * 
  * Parámetros:
  *   G: grafo con la información de los vértices
- *   D: matriz de distancias (ya inicializada en el Paso 1)
+ *   D: matriz de distancias/tiempos (ya inicializada en el Paso 1)
  *   P: matriz de vértices previos (ya inicializada en el Paso 1)
  * 
  * Lógica según el pseudocódigo:
  *   Para cada vértice k (vértice intermedio):
  *     Para cada vértice i (origen):
  *       Para cada vértice j (destino):
- *         Si el camino i->k->j es más corto que i->j directo:
- *           Actualizar D(i,j) con la nueva distancia más corta
+ *         Si el camino i->k->j es más corto/rápido que i->j directo:
+ *           Actualizar D(i,j) con el nuevo coste más bajo
  *           Actualizar P(i,j) con el vértice previo de k->j
  */
 void floyd_warshall(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
@@ -367,16 +410,16 @@ void floyd_warshall(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
             // Iteramos sobre cada posible vértice DESTINO j
             for (j = 0; j < N; j++) {
                 // Comparamos dos opciones:
-                //   Opción A: Ir directamente de i a j (distancia actual D[i][j])
+                //   Opción A: Ir directamente de i a j (coste actual D[i][j])
                 //   Opción B: Ir de i a k, y luego de k a j (D[i][k] + D[k][j])
                 //
                 // Si la Opción B es mejor, actualizamos las matrices
                 
                 if (D[i][j] > D[i][k] + D[k][j]) {
-                    // Guardar la nueva distancia más corta
-                    // La distancia de i a j ahora es la suma de:
-                    //   - Distancia de i a k (D[i][k])
-                    //   - Distancia de k a j (D[k][j])
+                    // Guardar el nuevo coste más bajo
+                    // El coste de i a j ahora es la suma de:
+                    //   - Coste de i a k (D[i][k])
+                    //   - Coste de k a j (D[k][j])
                     D[i][j] = D[i][k] + D[k][j];
                     
                     // Guardar el vértice previo correcto
@@ -390,17 +433,17 @@ void floyd_warshall(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
     }
     
     // Al terminar los tres bucles, las matrices D y P contienen:
-    // Matriz D: Las distancias MÍNIMAS entre TODOS los pares de vértices
+    // Matriz D: Los costes MÍNIMOS entre TODOS los pares de vértices
     //           Considera todos los caminos posibles en el grafo
     // Matriz P: Los vértices previos que permiten reconstruir el camino
-    //           más corto entre cualquier par de vértices
+    //           más corto/rápido entre cualquier par de vértices
 }
 
 
 /*
  * Función: imprimir_camino
  * ------------------------
- * Imprime el camino más corto entre un vértice origen y un vértice destino
+ * Imprime el camino más corto/rápido entre un vértice origen y un vértice destino
  * usando la matriz de vértices previos P calculada por Floyd-Warshall.
  * 
  * Esta es una función RECURSIVA que reconstruye el camino de atrás hacia adelante.
@@ -417,20 +460,11 @@ void imprimir_camino(grafo G, int P[][MAXVERTICES], int origen, int destino) {
     
     
     // Si origen == destino, solo imprimimos el destino
-    // Ocurre cuando llegamos al principio del camino en la recursión
     
-    // Si origen es distinto destino
     if (origen != destino) {
-        //  Llamada recursiva para imprimir el camino hasta el previo
-        // P[origen][destino] nos da el vértice previo a 'destino' en el
-        // camino óptimo desde 'origen'
-        //
-        // Ejemplo: Si vamos de Winterfell (0) a King's Landing (5)
-        // y P[0][5] = 3 (Harrenhal), entonces primero imprimimos
-        // el camino de Winterfell a Harrenhal
         imprimir_camino(G, P, origen, P[origen][destino]);
         
-        // PASO 2: Determinar el tipo de conexión para imprimir el símbolo correcto
+        // Determinar el tipo de conexión para imprimir el símbolo correcto
         // Obtenemos el vértice previo a destino
         int previo = P[origen][destino];
         
@@ -438,90 +472,52 @@ void imprimir_camino(grafo G, int P[][MAXVERTICES], int origen, int destino) {
         char tipo = tipoconexion(G, previo, destino);
         
         // Imprimimos la flecha según el tipo de conexión:
-        // 't' (tierra) -> "--->"
-        // 'm' (mar)    -> "~~~>"
         if (tipo == 't') {
             printf("--->");
         } else if (tipo == 'm') {
             printf("~~~>");
         } else {
-            printf("-->"); // Caso por defecto (no debería ocurrir)
+            printf("-->"); 
         }
     }
     
-    // =========================================================================
-    // IMPRESIÓN DEL VÉRTICE DESTINO
-    // =========================================================================
-    // Después de imprimir todo el camino previo (o si estamos en el caso base),
-    // imprimimos el nombre de la ciudad destino actual
+    // Después de imprimir todo el camino previo imprimimos el nombre de la ciudad destino actual
     printf("%s", VECTOR[destino].name);
-    
-    // =========================================================================
-    // CÓMO FUNCIONA LA RECURSIÓN (Ejemplo):
-    // =========================================================================
-    // Supongamos el camino: Winterfell -> Moat Cailin -> Harrenhal -> King's Landing
-    // Con índices:           0             1              2             3
-    //
-    // Llamada inicial: imprimir_camino(G, P, 0, 3)
-    //   P[0][3] = 2, entonces llamamos: imprimir_camino(G, P, 0, 2)
-    //     P[0][2] = 1, entonces llamamos: imprimir_camino(G, P, 0, 1)
-    //       P[0][1] = 0, entonces llamamos: imprimir_camino(G, P, 0, 0)
-    //         origen == destino, imprimimos: "Winterfell"
-    //       Volvemos, imprimimos: "--->" (o "~~~>") y "Moat Cailin"
-    //     Volvemos, imprimimos: "--->" (o "~~~>") y "Harrenhal"
-    //   Volvemos, imprimimos: "--->" (o "~~~>") y "King's Landing"
-    //
-    // Resultado: Winterfell--->Moat Cailin--->Harrenhal--->King's Landing
-    // =========================================================================
 }
 
-
-//==============================================================================
-// FUNCIÓN DE MENÚ: BUSCAR LA RUTA MÁS CORTA (OPCIÓN E)
-//==============================================================================
-
 /*
- * Función: buscar_ruta_mas_corta
- * ------------------------------
- * Implementa la opción 'e' del menú: buscar la ruta más corta entre dos ciudades.
- * 
- * Esta función:
- * 1. Pide al usuario las ciudades origen y destino
- * 2. Verifica que ambas ciudades existen
- * 3. Inicializa las matrices para Floyd-Warshall
- * 4. Ejecuta el algoritmo de Floyd-Warshall
- * 5. Verifica que existe un camino entre origen y destino
- * 6. Imprime la ruta y la distancia total
+ * Función que busca la ruta óptima entre dos ciudades.
+ * Puede optimizar por DISTANCIA o por TIEMPO según el parámetro recibido.
  * 
  * Parámetros:
  *   G: puntero al grafo
+ *   optimizar_tiempo: flag que indica que optimizar:
+ *                     0 = optimizar DISTANCIA (ruta más corta)
+ *                     1 = optimizar TIEMPO (ruta más rápida)
  */
-void buscar_ruta_mas_corta(grafo *G) {
-    // Declaración de variables
+void buscar_ruta_optima(grafo *G, int optimizar_tiempo) {
     tipovertice origen, destino;  // Ciudades origen y destino
     int pos_origen, pos_destino;  // Posiciones en el array de vértices
     
     // Matrices para Floyd-Warshall
-    float D[MAXVERTICES][MAXVERTICES];  // Matriz de distancias mínimas
+    float D[MAXVERTICES][MAXVERTICES];  // Matriz de costes mínimos
     int P[MAXVERTICES][MAXVERTICES];    // Matriz de vértices previos
     
-    // =========================================================================
-    // PASO 1: Solicitar ciudad ORIGEN al usuario
-    // =========================================================================
+    // Variables para velocidades
+    float vel_tierra, vel_mar;
+    char medio;  // Medio de transporte elegido por el usuario
+
     printf("\nEspecifica el nombre de la ciudad de origen: ");
-    scanf(" %[^\n]", origen.name);  // Leemos el nombre completo (con espacios)
+    scanf(" %[^\n]", origen.name);
     
     // Verificar que la ciudad origen existe en el grafo
     // La función posicion() devuelve -1 si no encuentra el vértice
     pos_origen = posicion(*G, origen);
     if (pos_origen == -1) {
         printf("Error: La ciudad '%s' no existe en el mapa.\n", origen.name);
-        return;  // Salimos de la función si la ciudad no existe
+        return;
     }
     
-    // =========================================================================
-    // PASO 2: Solicitar ciudad DESTINO al usuario
-    // =========================================================================
     printf("Especifica el nombre de la ciudad de destino: ");
     scanf(" %[^\n]", destino.name);
     
@@ -532,35 +528,87 @@ void buscar_ruta_mas_corta(grafo *G) {
         return;
     }
     
-    // =========================================================================
-    // PASO 3: Ejecutar el algoritmo de Floyd-Warshall
-    // =========================================================================
-    // Primero inicializamos las matrices D y P (Paso 1)
-    inicializar_floyd(*G, D, P);
+    //  Si optimizamos TIEMPO, preguntar el medio de transporte
+    if (optimizar_tiempo) {
+        printf("\nMedio de transporte:\n");
+        printf("  c - Caballo (por tierra y/o mar)\n");
+        printf("  d - Dragón\n");
+        printf("Opción: ");
+        scanf(" %c", &medio);
+        
+        // Configurar velocidades según el medio elegido
+        if (medio == 'c' || medio == 'C') {
+            // CABALLO: velocidades diferentes para tierra y mar
+            vel_tierra = 5.5;     // km/h a caballo por tierra
+            vel_mar = 11.25;      // km/h en barco por mar
+        } else if (medio == 'd' || medio == 'D') {
+            // DRAGÓN: misma velocidad por tierra y mar
+            vel_tierra = 80.0;    // km/h en dragón
+            vel_mar = 80.0;       // km/h en dragón
+        } else {
+            printf("Opción no válida.\n");
+            return;
+        }
+    }
     
-    // Luego calculamos las distancias mínimas (Paso 2)
+    // Ejecutar el algoritmo de Floyd-Warshall
+    // Primero inicializamos las matrices D y P
+    inicializar_floyd(*G, D, P, optimizar_tiempo, vel_tierra, vel_mar);
+    
+    // Luego calculamos los costes mínimos con Floyd-Warshall
+    // El algoritmo funciona igual para distancias y tiempos
     floyd_warshall(*G, D, P);
     
-    // =========================================================================
-    // PASO 4: Verificar que existe un camino entre origen y destino
-    // =========================================================================
+
+    // Verificar que existe un camino entre origen y destino
     // Si D[pos_origen][pos_destino] es infinito, no existe camino
     if (D[pos_origen][pos_destino] == FLT_MAX) {
         printf("\nNo existe ruta entre %s y %s.\n", origen.name, destino.name);
         return;
     }
     
-    // =========================================================================
-    // PASO 5: Imprimir la ruta y la distancia total
-    // =========================================================================
-    printf("\nRuta: ");
     
-    // Llamamos a la función recursiva para imprimir el camino (Paso 3)
+    // Imprimir la ruta y el coste total
+
+    if (optimizar_tiempo) {
+        printf("\nRuta más rápida: ");
+    } else {
+        printf("\nRuta más corta: ");
+    }
+    
+    // Llamamos a la función recursiva para imprimir el camino
     imprimir_camino(*G, P, pos_origen, pos_destino);
     
-    // Imprimimos la distancia total con 2 decimales
-    printf("\nLa distancia total desde %s hasta %s es de %.2f kms\n",
-           origen.name, destino.name, D[pos_origen][pos_destino]);
+    // Imprimimos el coste total con el formato adecuado
+    if (optimizar_tiempo) {
+        // Si optimizamos tiempo, mostramos el resultado en horas
+        printf("\nEl tiempo total desde %s hasta %s es de %.2f horas\n",
+               origen.name, destino.name, D[pos_origen][pos_destino]);
+    } else {
+        // Si optimizamos distancia, mostramos el resultado en kilómetros
+        printf("\nLa distancia total desde %s hasta %s es de %.2f kms\n",
+               origen.name, destino.name, D[pos_origen][pos_destino]);
+    }
 }
 
+/*
+ * Opción 'e' del menú: buscar la ruta más corta entre dos ciudades.
+ * 
+ * Es una función que llama a la función
+ * buscar_ruta_optima con el parámetro optimizar_tiempo = 0.
+ * De esta forma el codigo del menu es mas claro.
+ * 
+ */
+void buscar_ruta_mas_corta(grafo *G) {
+    buscar_ruta_optima(G, 0);
+}
 
+/*
+ * Opción 'f' del menú: buscar la ruta más rápida entre dos ciudades.
+ * 
+ * Esta es una función que llama a la función
+ * buscar_ruta_optima con el parámetro optimizar_tiempo = 1.
+ */
+void buscar_ruta_mas_rapida(grafo *G) {
+    buscar_ruta_optima(G, 1);
+}

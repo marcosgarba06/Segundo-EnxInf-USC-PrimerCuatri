@@ -24,7 +24,7 @@ int main(int argc, char** argv) {
         printf("d. Eliminar arco\n");
         printf("e. Buscar la ruta mas corta\n");
         printf("f. Buscar la ruta mas rapida\n");
-        printf("g. Imprimir la infraestructura viaria de tiempo minimo");
+        printf("g. Imprimir la infraestructura viaria de tiempo minimo\n");
         printf("i. Imprimir grafo\n");
         printf("s. Salir\n");
 
@@ -48,6 +48,7 @@ int main(int argc, char** argv) {
                 buscar_ruta_mas_corta(&G);
                 break;
             case 'f': case 'F':
+                buscar_ruta_mas_rapida(&G);
                 break;
             case 'g': case 'G':
                 break;
