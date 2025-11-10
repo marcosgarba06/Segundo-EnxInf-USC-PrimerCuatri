@@ -34,9 +34,6 @@ void eliminar_vertice(grafo *G) {
     printf("Introduce nombre de la ciudad: ");
     scanf(" %[^\n]", v1.name);
 
-    printf("Introduce región: ");
-    scanf(" %[^\n]", v1.region);
-
     //Comprobar si el vertice existe en el grafo, si no existe, da un mensaje de error    
     if (existe_vertice(*G, v1))
         borrar_vertice(G, v1);
@@ -115,8 +112,6 @@ void eliminar_arco(grafo *G) {
     //Vértice destino del arco
     printf("Introduce nombre de la ciudad destino: ");
     scanf(" %[^\n]", v2.name);
-    printf("Introduce región destino: ");
-    scanf(" %[^\n]", v2.region);
     
     if (!existe_vertice(*G, v2)) {
         printf("La ciudad %s (%s) no existe en el grafo\n", v2.name, v2.region);
@@ -263,10 +258,7 @@ void guardarArch(grafo G, const char* filename) {
 
 /*
  * Inicializa las matrices D (distancias o tiempos) y P (vértices previos) para el
- * algoritmo de Floyd-Warshall según el pseudocódigo proporcionado.
- * 
- * MODIFICACIÓN: Esta función ahora puede inicializar la matriz para optimizar
- * tanto DISTANCIA como TIEMPO según los parámetros recibidos.
+ * algoritmo de Floyd-Warshall.
  * 
  * Parámetros:
  *   G: grafo del que se extraerá la información de conexiones
@@ -279,44 +271,26 @@ void guardarArch(grafo G, const char* filename) {
  *               (solo se usa si optimizar_tiempo == 1)
  *   vel_mar: velocidad de desplazamiento por mar en km/h
  *            (solo se usa si optimizar_tiempo == 1)
- * 
- * Lógica de inicialización según el pseudocódigo:
- *   Si optimizar_tiempo == 0 (DISTANCIA):
- *     D(i,j) = distancia(i,j)   si A(i,j) ≠ 0 y i ≠ j (existe conexión directa)
- *   
- *   Si optimizar_tiempo == 1 (TIEMPO):
- *     D(i,j) = distancia(i,j) / velocidad   si A(i,j) ≠ 0 y i ≠ j
- *              donde velocidad = vel_tierra si el tipo de conexión es 't'
- *              donde velocidad = vel_mar si el tipo de conexión es 'm'
- *   
- *   En ambos casos:
- *     D(i,j) = 0        si i = j (coste de un vértice a sí mismo es 0)
- *     D(i,j) = ∞        en cualquier otro caso (no hay conexión directa)
- *   
- *     P(i,j) = i        si A(i,j) ≠ 0 y i ≠ j (el previo a j desde i es i mismo)
- *     P(i,j) = 0        en cualquier otro caso (no hay camino directo)
  */
-void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES],
-                       int optimizar_tiempo, float vel_tierra, float vel_mar) {
+void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES], int optimizar_tiempo, float vel_tierra, float vel_mar) {
     // Obtenemos el número total de vértices del grafo
     // Esto nos permite saber hasta dónde iterar en las matrices
     int N = num_vertices(G);
     
     int i, j;
     
-    // Recorremos todas las filas de las matrices (cada vértice origen)
+    // Recorremos todas las filas de las matrices 
     for (i = 0; i < N; i++) {
-        // Recorremos todas las columnas de las matrices (cada vértice destino)
+        // Recorremos todas las columnas de las matrices
         for (j = 0; j < N; j++) {
-            
-            // CASO 1: La diagonal principal (cuando i == j)
+
             // Un vértice tiene distancia/tiempo 0 a sí mismo
             if (i == j) {
                 D[i][j] = 0;      // Coste de un vértice a sí mismo es 0
                 P[i][j] = 0;      // No hay vértice previo (convenio: 0)
             }
             
-            // CASO 2: Existe una conexión directa entre i y j (son adyacentes)
+            // Existe una conexión directa entre i y j 
             // Debemos calcular el coste según si optimizamos distancia o tiempo
             else if (son_adyacentes(G, i, j)) {
                 // Obtenemos la distancia en km del arco
@@ -324,12 +298,10 @@ void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES],
                 
                 // Dependiendo del modo de optimización, calculamos el coste
                 if (optimizar_tiempo) {
-                    // MODO TIEMPO: Calculamos tiempo = distancia / velocidad
+                    // Calculamos tiempo = distancia / velocidad
                     // La velocidad depende del tipo de conexión (tierra o mar)
                     char tipo = tipoconexion(G, i, j);
                     
-                    // Si es tierra ('t'), usamos velocidad por tierra
-                    // Si es mar ('m'), usamos velocidad por mar
                     if (tipo == 't') {
                         D[i][j] = dist / vel_tierra;  // Tiempo en horas por tierra
                     } else if (tipo == 'm') {
@@ -339,54 +311,30 @@ void inicializar_floyd(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES],
                         D[i][j] = FLT_MAX;
                     }
                 } else {
-                    // MODO DISTANCIA: Usamos directamente la distancia
+                    // Optimizar por DISTANCIA
                     D[i][j] = dist;
                 }
-                
-                // El vértice previo a j viniendo desde i es i mismo
-                // Esto significa que para ir de i a j, el paso anterior es i
                 P[i][j] = i;
             }
             
-            // CASO 3: No existe conexión directa entre i y j (no son adyacentes)
-            // Inicializamos con "infinito" para indicar que no hay camino directo
+            // i y j no son adyacentes 
+            // Inicializamos con "infinito"
             else {
-                // FLT_MAX representa el infinito en números flotantes
-                // Esto indica que inicialmente no conocemos un camino de i a j
                 D[i][j] = FLT_MAX;
-                
-                // No hay vértice previo porque no existe camino directo
                 P[i][j] = 0;
             }
         }
     }
-    // Al finalizar esta función, tenemos:
-    // - Matriz D: contiene las distancias/tiempos directos entre vértices adyacentes,
-    //             0 en la diagonal, e infinito donde no hay conexión directa
-    // - Matriz P: contiene el vértice previo para cada arco directo,
-    //             lo que nos permitirá reconstruir los caminos más adelante
 }
 
 /*
  * Calcula las distancias/tiempos mínimos entre todos los pares de vértices usando
  * el algoritmo de Floyd-Warshall. Modifica las matrices D y P.
  * 
- * NOTA: Esta función funciona igual tanto para distancias como para tiempos,
- * ya que solo realiza operaciones de comparación y suma. La diferencia está
- * en cómo se inicializó la matriz D en la función inicializar_floyd.
- * 
  * Parámetros:
  *   G: grafo con la información de los vértices
  *   D: matriz de distancias/tiempos (ya inicializada en el Paso 1)
  *   P: matriz de vértices previos (ya inicializada en el Paso 1)
- * 
- * Lógica según el pseudocódigo:
- *   Para cada vértice k (vértice intermedio):
- *     Para cada vértice i (origen):
- *       Para cada vértice j (destino):
- *         Si el camino i->k->j es más corto/rápido que i->j directo:
- *           Actualizar D(i,j) con el nuevo coste más bajo
- *           Actualizar P(i,j) con el vértice previo de k->j
  */
 void floyd_warshall(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
     // Obtenemos el número total de vértices del grafo
@@ -395,13 +343,7 @@ void floyd_warshall(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
     // Variables para los tres bucles anidados
     int k, i, j;
     
-    // =========================================================================
-    // TRIPLE BUCLE ANIDADO: Corazón del algoritmo de Floyd-Warshall
-    // =========================================================================
-    
     // Iteramos sobre cada posible vértice INTERMEDIO k
-    // En cada iteración construimos la matriz Dk, que considera caminos
-    // que pueden pasar por los vértices {0, 1, 2, ..., k}
     for (k = 0; k < N; k++) {
         
         // Iteramos sobre cada posible vértice ORIGEN i
@@ -412,42 +354,21 @@ void floyd_warshall(grafo G, float D[][MAXVERTICES], int P[][MAXVERTICES]) {
                 // Comparamos dos opciones:
                 //   Opción A: Ir directamente de i a j (coste actual D[i][j])
                 //   Opción B: Ir de i a k, y luego de k a j (D[i][k] + D[k][j])
-                //
-                // Si la Opción B es mejor, actualizamos las matrices
                 
                 if (D[i][j] > D[i][k] + D[k][j]) {
-                    // Guardar el nuevo coste más bajo
-                    // El coste de i a j ahora es la suma de:
-                    //   - Coste de i a k (D[i][k])
-                    //   - Coste de k a j (D[k][j])
                     D[i][j] = D[i][k] + D[k][j];
-                    
-                    // Guardar el vértice previo correcto
-                    // Para llegar a j desde i (pasando por k), el vértice
-                    // previo a j es el mismo que usaríamos para ir de k a j
-                    // Es decir, copiamos P[k][j] en P[i][j]
                     P[i][j] = P[k][j];
                 }
             }
         }
     }
-    
-    // Al terminar los tres bucles, las matrices D y P contienen:
-    // Matriz D: Los costes MÍNIMOS entre TODOS los pares de vértices
-    //           Considera todos los caminos posibles en el grafo
-    // Matriz P: Los vértices previos que permiten reconstruir el camino
-    //           más corto/rápido entre cualquier par de vértices
 }
 
 
 /*
- * Función: imprimir_camino
- * ------------------------
  * Imprime el camino más corto/rápido entre un vértice origen y un vértice destino
- * usando la matriz de vértices previos P calculada por Floyd-Warshall.
- * 
- * Esta es una función RECURSIVA que reconstruye el camino de atrás hacia adelante.
- * 
+ * usando la matriz de vértices previos P calculada por Floyd-Warshall.ç
+ *  
  * Parámetros:
  *   G: grafo (para obtener información de los vértices y las conexiones)
  *   P: matriz de vértices previos (calculada por Floyd-Warshall)
@@ -458,13 +379,9 @@ void imprimir_camino(grafo G, int P[][MAXVERTICES], int origen, int destino) {
     // Obtenemos el array de vértices para poder mostrar nombres de ciudades
     tipovertice *VECTOR = array_vertices(G);
     
-    
-    // Si origen == destino, solo imprimimos el destino
-    
     if (origen != destino) {
         imprimir_camino(G, P, origen, P[origen][destino]);
-        
-        // Determinar el tipo de conexión para imprimir el símbolo correcto
+    
         // Obtenemos el vértice previo a destino
         int previo = P[origen][destino];
         
@@ -482,6 +399,7 @@ void imprimir_camino(grafo G, int P[][MAXVERTICES], int origen, int destino) {
     }
     
     // Después de imprimir todo el camino previo imprimimos el nombre de la ciudad destino actual
+    // Y si solo hay un vertice imprimimos solo el destino
     printf("%s", VECTOR[destino].name);
 }
 
@@ -511,7 +429,6 @@ void buscar_ruta_optima(grafo *G, int optimizar_tiempo) {
     scanf(" %[^\n]", origen.name);
     
     // Verificar que la ciudad origen existe en el grafo
-    // La función posicion() devuelve -1 si no encuentra el vértice
     pos_origen = posicion(*G, origen);
     if (pos_origen == -1) {
         printf("Error: La ciudad '%s' no existe en el mapa.\n", origen.name);
@@ -530,10 +447,7 @@ void buscar_ruta_optima(grafo *G, int optimizar_tiempo) {
     
     //  Si optimizamos TIEMPO, preguntar el medio de transporte
     if (optimizar_tiempo) {
-        printf("\nMedio de transporte:\n");
-        printf("  c - Caballo (por tierra y/o mar)\n");
-        printf("  d - Dragón\n");
-        printf("Opción: ");
+        printf("\nMedio de transporte ('c' para Caballo, 'd' para Dragon):");
         scanf(" %c", &medio);
         
         // Configurar velocidades según el medio elegido
@@ -611,4 +525,233 @@ void buscar_ruta_mas_corta(grafo *G) {
  */
 void buscar_ruta_mas_rapida(grafo *G) {
     buscar_ruta_optima(G, 1);
+}
+
+
+/*
+ * Implementa el algoritmo de Prim para calcular el árbol de expansión de coste minimo
+ *
+ * Parámetros:
+ *   G: grafo con las ciudades y conexiones
+ *   A: matriz de costes (tiempos) entre vértices
+ *   
+ * Retorna:
+ *   El tiempo total del árbol de expansión de coste mínimo
+ */
+float prim(grafo G, float A[][MAXVERTICES]) {
+    // Obtener información del grafo
+    int N = num_vertices(G);                    // Número de vértices
+    tipovertice *VECTOR = array_vertices(G);    // Array de vértices
+        
+    // Selected(i)=0; i=0,…,N-1
+    int Selected[MAXVERTICES];
+    int i;
+    for (i = 0; i < N; i++) {
+        Selected[i] = 0;
+    }
+    
+    // numArcos=0, distanciaTotal=0
+    int numArcos = 0;
+    float distanciaTotal = 0;
+    
+    // iniciamos el algoritmo seleccionando el primer vértice
+    // Selected(0)=1
+    Selected[0] = 1;
+    
+    // MIENTRAS numArcos<N-1
+    while (numArcos < N - 1) {
+        
+        // minimo=INFINITO
+        float minimo = FLT_MAX;
+        
+        // vx=0, vy=0
+        int vx = 0;
+        int vy = 0;
+        
+        // Busco el arco x-y con valor mínimo, con Selected(vx)=1, Selected(vy)=0
+        
+        // DESDE i=0;i<N;i++
+        for (i = 0; i < N; i++) {
+            
+            // SI Selected(i)=1
+            if (Selected[i] == 1) {
+                
+                // DESDE j=0;j<N;j++
+                int j;
+                for (j = 0; j < N; j++) {
+                    
+                    // SI Selected(j)≠1 && existearco i-j
+                    if (Selected[j] != 1 && A[i][j] != 0 && A[i][j] != FLT_MAX) {
+                        
+                        // SI minimo>A(i,j)
+                        if (minimo > A[i][j]) {
+                            // minimo=A(i,j), vx=i, vy=j
+                            minimo = A[i][j];
+                            vx = i;
+                            vy = j;
+                        }
+                        // FIN_SI
+                    }
+                    // FIN_SI
+                }
+                // FIN_DESDE
+            }
+            // FIN_SI
+        }
+        // FIN_DESDE
+        
+        // Verificar si encontramos un arco válido
+        if (minimo == FLT_MAX) {
+            // No hay más arcos disponibles, el grafo no es conexo
+            printf("\nAdvertencia: El grafo no es conexo.\n");
+            break;
+        }
+        
+        // vx-vy es el arco con valor mínimo que añade vy al conjunto Selected
+        // Selected(vy)=1, numArcos++
+        Selected[vy] = 1;
+        numArcos++;
+        
+        // Imprimir VECTOR(x)VECTOR(y): A(x,y)
+        // Determinamos el símbolo según el tipo de conexión
+        char tipo = tipoconexion(G, vx, vy);
+        char *simbolo;
+        if (tipo == 't') {
+            simbolo = "--";  // Tierra
+        } else if (tipo == 'm') {
+            simbolo = "~~";  // Mar
+        } else {
+            simbolo = "--";  // Por defecto
+        }
+        
+        printf("%20s%2s%-20s : %10.2f horas\n",
+               VECTOR[vx].name,
+               simbolo,
+               VECTOR[vy].name,
+               minimo);
+        
+        // distanciaTotal=distanciaTotal+A(x,y)
+        distanciaTotal = distanciaTotal + minimo;
+    }
+    // FIN_MIENTRAS
+    
+    return distanciaTotal;
+}
+
+/*
+ * Función: infraestructura_viaria_minima
+ *
+ * Implementa la opción 'h' del menú: calcular e imprimir el árbol de expansión
+ * de coste mínimo usando el algoritmo de Prim.
+ * 
+ * Esta función:
+ * 1. Construye la matriz A de costes (tiempos) entre vértices
+ * 2. Llama al algoritmo de Prim
+ * 3. Muestra el resultado
+ * 
+ * Parámetros:
+ *   G: puntero al grafo
+ */
+void infraestructura_viaria_minima(grafo *G) {
+    // Obtener número de vértices
+    int N = num_vertices(*G);
+    
+    if (N <= 0) {
+        printf("\nEl grafo está vacío. No hay ciudades para conectar.\n");
+        return;
+    }
+    
+    if (N == 1) {
+        printf("\nSolo hay una ciudad. No se necesitan conexiones.\n");
+        return;
+    }
+    
+    // La matriz A contiene los costes (tiempos) entre cada par de vértices
+    // A[i][j] = tiempo de viaje de i a j
+    //         = distancia(i,j) / velocidad
+    //         = 0 si i == j
+    //         = INFINITO si no hay conexión directa
+    
+    // Matriz A de costes (tiempos entre ciudades)
+    float A[MAXVERTICES][MAXVERTICES];
+    
+    // Velocidades de desplazamiento a caballo (según el enunciado)
+    // Solo consideramos caballo porque el enunciado especifica:
+    // "solo por tierra y/o mar"
+    float vel_tierra = 5.5;     // km/h por tierra a caballo
+    float vel_mar = 11.25;      // km/h en barco
+    
+    int i, j;
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            if (i == j) {
+                // Diagonal principal: coste 0
+                A[i][j] = 0;
+            }
+            else if (son_adyacentes(*G, i, j)) {
+                // Existe conexión directa: calcular tiempo
+                float dist = distancia(*G, i, j);
+                char tipo = tipoconexion(*G, i, j);
+                
+                if (tipo == 't') {
+                    // Conexión por tierra
+                    A[i][j] = dist / vel_tierra;
+                } else if (tipo == 'm') {
+                    // Conexión por mar
+                    A[i][j] = dist / vel_mar;
+                } else {
+                    // Tipo desconocido
+                    A[i][j] = FLT_MAX;
+                }
+            }
+            else {
+                // No hay conexión directa
+                A[i][j] = FLT_MAX;
+            }
+        }
+    }
+    
+    // Imprimir algoritmo prim
+    printf("\n");
+    printf("Árbol de expansión de coste mínimo (Algoritmo de Prim)\n");    
+    
+    float tiempoTotal = prim(*G, A);
+    
+    printf("\n");
+    printf("Tiempo del árbol de expansión de coste mínimo: %.2f horas\n", tiempoTotal);
+}
+
+
+
+void _printMatrix(float matrix[][MAXVERTICES], int N) {
+    int i, j;
+    
+    printf("\n");
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            // Si el valor es infinito, imprimimos "INF"
+            if (matrix[i][j] == FLT_MAX) {
+                printf("%10s", "INF");
+            } else {
+                // Si no, imprimimos el valor con 2 decimales
+                printf("%10.2f", matrix[i][j]);
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+
+void _printMatrixInt(int matrix[][MAXVERTICES], int N) {
+    int i, j;
+    
+    printf("\n");
+    for (i = 0; i < N; i++) {
+        for (j = 0; j < N; j++) {
+            printf("%10d", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    printf("\n");
 }

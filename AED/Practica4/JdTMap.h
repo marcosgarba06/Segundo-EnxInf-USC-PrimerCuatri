@@ -29,5 +29,7 @@ void buscar_ruta_mas_corta(grafo *G);
 
 void buscar_ruta_mas_rapida(grafo *G);
 
+void infraestructura_viaria_minima(grafo *G);
+
 #endif	/* FUNCIONES_H */
 

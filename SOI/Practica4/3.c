@@ -76,6 +76,6 @@ int main() {
     for (int k = 0; k < 3; k++) {
         pthread_join(hilos[k], NULL);
     }
-
+    
     exit(EXIT_SUCCESS);
 }

@@ -51,6 +51,7 @@ int main(int argc, char** argv) {
                 buscar_ruta_mas_rapida(&G);
                 break;
             case 'g': case 'G':
+                infraestructura_viaria_minima(&G);
                 break;
             case 'i': case 'I':
                 imprimir_grafo(G);
@@ -63,7 +64,7 @@ int main(int argc, char** argv) {
     } while (opcion != 's');
     
     //Guardar el grafo en un archivo
-    guardarArch(G, "grafo_actualizado.csv"); // CAMBIAR NOMBRE AL TERMINAR PRUEBAS
+    guardarArch(G, FILE_NAME); // CAMBIAR NOMBRE AL TERMINAR PRUEBAS
     
     //Al salir, liberamos la memoria del TAD, lo destruimos
     borrar_grafo(&G);
