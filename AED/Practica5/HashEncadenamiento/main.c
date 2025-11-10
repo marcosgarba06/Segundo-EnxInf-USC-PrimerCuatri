@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     //////////////////////////////////////////////////////////////////////
 
     //Abrimos el fichero de datos de ejemplo, con 10000 jugadores
-    FILE *fp = fopen("jugadores_got.csv", "rt");
+    FILE *fp = fopen("jugadores_jdt.csv", "rt");
 
     //Informo del tamaño de la tabla actual
     printf("Tamaño de la tabla hash: %d\n",N);
