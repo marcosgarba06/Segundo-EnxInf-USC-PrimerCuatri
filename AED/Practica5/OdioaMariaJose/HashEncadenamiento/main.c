@@ -3,9 +3,9 @@
 #include "tabla_hash_encadenamiento.h"
 
 //Hay que añadir como parámetro la variable nColisionesI: número de colisiones en inserción
-void insercionArchivo(FILE *fp, TablaHash *t, unsigned int tipo, unsigned int K, int *nColisionesI);
+void insercionArchivo(FILE *fp, TablaHash *t, unsigned int tipo, unsigned int K, int* nColisionesI);
 //Hay que añadir como parámetro la variable nPasosExtraB: número de pasos extra en búsqueda
-void busquedaArchivo(FILE *fp, TablaHash t, unsigned int tipo, unsigned int K, int *nPasosExtraB);
+void busquedaArchivo(FILE *fp, TablaHash t, unsigned int tipo, unsigned int K, int* nPasosExtraB);
 
 int main(int argc, char** argv) {
     unsigned int tipoFH; //tipo de función hash: 1-2-3
@@ -16,8 +16,7 @@ int main(int argc, char** argv) {
     //////////////////////////////////////////////////////////////////////
     //Inicializar a 0 las variables nColisionesI y nPasosExtraB
     //////////////////////////////////////////////////////////////////////
-    int nColisionesI = 0;
-    int nPasosExtraB = 0;
+    int nColisionesI = 0, nPasosExtraB = 0;
 
     //Abrimos el fichero de datos de ejemplo, con 10000 jugadores
     FILE *fp = fopen("jugadores_jdt.csv", "rt");
@@ -49,8 +48,8 @@ int main(int argc, char** argv) {
     insercionArchivo(fp, &t, tipoFH, K, &nColisionesI);
     //////////////////////////////////////////////////////
     //Imprimir nColisionesI
-    printf("\nNúmero de colisiones = %u\n", nColisionesI);
     //////////////////////////////////////////////////////
+    printf("\n\t  Número colisións: %d\n", nColisionesI);
 
     rewind(fp); //rebobino
 
@@ -62,8 +61,8 @@ int main(int argc, char** argv) {
     busquedaArchivo(fp, t, tipoFH, K, &nPasosExtraB);
     //////////////////////////////////////////////////////
     //Imprimir nPasosExtraB
-    printf("\nNúmero de colisiones = %u\n", nColisionesI);
     //////////////////////////////////////////////////////
+    printf("\n\t  Número pasos extra: %d\n", nPasosExtraB);
     
     DestruirTablaHash(t); //Destruyo la tabla
     fclose(fp); //Cierro el archivo    
@@ -75,7 +74,7 @@ int main(int argc, char** argv) {
 ///////////////////////////////////////
 //Añadir el parámetro por referencia nColisionesI
 ///////////////////////////////////////
-void insercionArchivo(FILE *fp, TablaHash *t, unsigned int tipoFH, unsigned int K, int *nColisionesI) {
+void insercionArchivo(FILE *fp, TablaHash *t, unsigned int tipoFH, unsigned int K, int* nColisionesI) {
     TIPOELEMENTO jugador;
     if (fp) {
         fscanf(fp, " %[^,] , %s , %s", jugador.nombre, jugador.alias, jugador.correo);
@@ -96,15 +95,17 @@ void insercionArchivo(FILE *fp, TablaHash *t, unsigned int tipoFH, unsigned int 
 //////////////////////////////////////////////////////////////////
 //Añadir el parámetro por referencia nPasosExtraB
 //////////////////////////////////////////////////////////////////
-void busquedaArchivo(FILE *fp, TablaHash t, unsigned int tipoFH, unsigned int K, int *nPasosExtraB) {
+void busquedaArchivo(FILE *fp, TablaHash t, unsigned int tipoFH, unsigned int K, int* nPasosExtraB) {
     TIPOELEMENTO jugador;
+    int aux = 0;
     if (fp) {
         fscanf(fp, " %[^,] , %s , %s", jugador.nombre, jugador.alias, jugador.correo);
         while (!feof(fp)) {
             //////////////////////////////////////////////////////////////////////////////////////////
             //Añadir a BuscarHash() el parámetro por referencia nPasosExtraB
-            BuscarHash(t, jugador.alias, &jugador, tipoFH, K, nPasosExtraB);
+            BuscarHash(t, jugador.alias, &jugador, tipoFH, K, &aux);
             fscanf(fp, " %[^,] , %s , %s", jugador.nombre, jugador.alias, jugador.correo);
+            *nPasosExtraB += aux;
         }
     } else {
         printf("El archivo no ha podido abrirse\n");

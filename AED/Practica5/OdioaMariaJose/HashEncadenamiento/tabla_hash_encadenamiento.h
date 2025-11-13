@@ -56,7 +56,7 @@ int FuncionHash(char *cad, unsigned int tipoFH, unsigned int K);
  * @return si la búsqueda tuvo éxito
  */
 /////////////////////Hay que añadir nPasosExtraB//////////////////////////
-int BuscarHash(TablaHash t, char *clavebuscar, TIPOELEMENTO *e, unsigned int tipoFH, unsigned int K, int *nPasosExtraB);
+int BuscarHash(TablaHash t, char *clavebuscar, TIPOELEMENTO *e, unsigned int tipoFH, unsigned int K, int* nPasosExtraB);
 
 /**
  * Mira si clavebuscar está en la tabla hash
@@ -67,7 +67,7 @@ int BuscarHash(TablaHash t, char *clavebuscar, TIPOELEMENTO *e, unsigned int tip
  * @nPasosExtraB son los pasos que tengo que realizar en cada lista hasta encontrar e
  * @return si la clave está en la tabla
  */
-int EsMiembroHash (TablaHash t, char *clavebuscar, unsigned int tipoFH, unsigned int K, int *nPasosExtraB);
+int EsMiembroHash (TablaHash t, char *clavebuscar, unsigned int tipoFH, unsigned int K, int* nPasosExtraB);
 
 /**
  * Inserta un elemento en una tabla hash al principio de la lista
@@ -89,6 +89,6 @@ int InsertarHash (TablaHash *t, TIPOELEMENTO elemento, unsigned int tipoFH, unsi
  * @param K es el factor de ponderación cuando tipoFH=2
  * @param nPasosExtraE son los pasos extra para encontrar el elemento a eliminar
 */
-void BorrarHash (TablaHash *t, char *claveborrar,unsigned int tipoFH, unsigned int K, int *nPasosExtraE);
+void BorrarHash (TablaHash *t, char *claveborrar,unsigned int tipoFH, unsigned int K, int* nPasosExtraE);
 #endif	// TABLA_HASH_ENCADENAMIENTO_H
 

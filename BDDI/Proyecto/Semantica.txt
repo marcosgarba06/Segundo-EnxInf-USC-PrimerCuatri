@@ -1,0 +1,38 @@
+Restricciones actuales
+
+1. No se pueden solapar actuaciones en el mismo escenario.
+
+2. El número de tickets vendidos no puede superar el aforo del escenario.
+
+3. Un asistente VIP puede acceder a todas las actuaciones, mientras que uno General solo a las actuaciones del escenario o día indicado en su ticket.
+
+4. Cada ticket está asociado a un solo asistente.
+
+5. Cada actuación tiene una hora de inicio y fin válidas (inicio < fin).
+
+6. Un artista no puede tener dos actuaciones simultáneas. → (Evita solapamiento temporal de un mismo artista en diferentes escenarios.)
+
+7. Un recurso no puede estar asignado simultáneamente a dos escenarios o actuaciones. → (Control de disponibilidad de equipos.)
+
+8. Un miembro del personal técnico no puede trabajar en dos escenarios distintos a la misma hora.
+
+9. Cada patrocinador tiene un presupuesto máximo y no puede financiar recursos o personal por encima de ese límite.
+
+10. Los nombres de escenarios y artistas deben ser únicos.
+
+11. Las actuaciones deben pertenecer a fechas dentro del rango de duración del festival.
+
+12. El tipo de ticket (General o VIP) debe coincidir con las zonas o escenarios a los que da acceso.
+
+13. Cada recurso debe tener un estado (disponible, en uso, averiado) que permita controlar su gestión.
+
+
+Relaciones 
+Escenario — Actuación	1:N	        Un escenario puede tener varias actuaciones; cada actuación se celebra en un único escenario.
+Artista — Actuación	N:M	        Un artista puede participar en varias actuaciones y una actuación puede incluir varios artistas.
+Artista — Escenario	N:M	        Un artista puede actuar en varios escenarios (en diferentes actuaciones).
+Asistente — Ticket	1:N	        Cada asistente puede comprar varios tickets.
+Asistente — Actuación	N:M	        Un asistente puede asistir a varias actuaciones y una actuación tiene múltiples asistentes.
+Patrocinador — Escenario N:M	        Un patrocinador puede financiar varios escenarios y cada escenario puede tener varios patrocinadores.
+Patrocinador — Recurso	N:M	        Un patrocinador puede aportar varios recursos.
+Patrocinador — Personal técnico	N:M	Un patrocinador puede contratar personal técnico para diversas tareas.

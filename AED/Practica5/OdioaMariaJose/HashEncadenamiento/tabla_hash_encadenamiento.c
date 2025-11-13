@@ -28,20 +28,20 @@ int InsertarHash(TablaHash *t, TIPOELEMENTO elemento, unsigned int tipoFH, unsig
     int pos = FuncionHash(elemento.alias, tipoFH, K);
     /////////////////////////////////////////////////////////////////////////////////////
     //Inicializo hayColision a cero
-    int hayColision = 0;
     //Se produce colisión cuando la lista de la posición pos NO está vacía
-    if(!esVaciaLista((*t)[pos])){
-        hayColision = 1;
-    }
     ///////////////////////////////////////////////////////////////////////////////////
+    int colision = 0;
+    if (!esListaVacia((*t)[pos]))
+        colision = 1;
+    
     insertarElementoLista(&(*t)[pos], primeroLista((*t)[pos]), elemento);
-    return hayColision;
+    return colision;
 }
 
 ////////////////////////////////////////////////////////////////////
 //Añadir nPasosExtraB como parámetro por referencia
 //////////////////////////////////////////////////////////////////
-int BuscarHash(TablaHash t, char *clavebuscar, TIPOELEMENTO *e, unsigned int tipoFH, unsigned int K, int *nPasosExtraB) {
+int BuscarHash(TablaHash t, char *clavebuscar, TIPOELEMENTO *e, unsigned int tipoFH, unsigned int K, int* nPasosExtraB) {
     TPOSICION p;
     unsigned int encontrado = 0;
     TIPOELEMENTO ele;
@@ -70,7 +70,7 @@ int BuscarHash(TablaHash t, char *clavebuscar, TIPOELEMENTO *e, unsigned int tip
 //////////////////////////////////////////
 // Añadir parámetro por referencia nPasosExtraB
 ///////////////////////////////////////////////
-int EsMiembroHash(TablaHash t, char *clavebuscar, unsigned int tipoFH, unsigned int K, int *nPasosExtraB) {
+int EsMiembroHash(TablaHash t, char *clavebuscar, unsigned int tipoFH, unsigned int K, int* nPasosExtraB) {
     TPOSICION p;
     int encontrado = 0;
     TIPOELEMENTO elemento;
@@ -80,13 +80,14 @@ int EsMiembroHash(TablaHash t, char *clavebuscar, unsigned int tipoFH, unsigned 
         recuperarElementoLista(t[pos], p, &elemento);
         if (strcmp(clavebuscar, elemento.alias) == 0)
             encontrado = 1;
-        else
+        else {
             p = siguienteLista(t[pos], p);
             /////////////////////////////////////////////////////////////////////
             //UN PASO ADICIONAL PARA BUSCAR la clave DENTRO DE LA LISTA t[pos]
             //Incrementar nPasosExtraB
             /////////////////////////////////////////////////////////////////////
             (*nPasosExtraB)++;
+        }
     }
     return encontrado;
 }
@@ -95,7 +96,7 @@ int EsMiembroHash(TablaHash t, char *clavebuscar, unsigned int tipoFH, unsigned 
 //////////////////////////////////////////
 // Añadir parámetro por referencia nPasosExtraE
 ///////////////////////////////////////////////
-void BorrarHash(TablaHash *t, char *claveborrar, unsigned int tipoFH, unsigned int K, int *nPasosExtraE) {
+void BorrarHash(TablaHash *t, char *claveborrar, unsigned int tipoFH, unsigned int K, int* nPasosExtraE) {
     TPOSICION p;
     TIPOELEMENTO elemento;
     int pos = FuncionHash(claveborrar, tipoFH, K);
