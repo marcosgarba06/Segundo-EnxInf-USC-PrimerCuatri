@@ -87,8 +87,7 @@ void insercionArchivo(FILE *fp, TablaHash *t, unsigned int tipoFH, unsigned int 
             *nColisionesI += InsertarHash(t, jugador, tipoFH, K); 
             fscanf(fp, " %[^,] , %s , %s", jugador.nombre, jugador.alias, jugador.correo);
         }
-    } else {
-        printf("El archivo no ha podido abrirse\n");
+    } else {        printf("El archivo no ha podido abrirse\n");
     }
 }
 
