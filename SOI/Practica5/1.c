@@ -1,3 +1,4 @@
+// Ejercicio 1
 // Código de Marcos García Blanco e Inés Landeira Rodríguez
 #include <stdio.h>
 #include <stdlib.h>
