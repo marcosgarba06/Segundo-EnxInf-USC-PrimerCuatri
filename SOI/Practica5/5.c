@@ -21,6 +21,7 @@ int main(int argc, char const *argv[])
 
     printf("Elige un valor para calcular su seno (en radianes): ");
     scanf("%lf", &valor);
+    getchar(); // Limpiar el buffer de entrada
     
     // Calcular el seno 
     sen = sin(valor);
