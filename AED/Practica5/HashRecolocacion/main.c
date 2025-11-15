@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
     busquedaArchivo(fp, t, tipoFH, K, tipoR, a, &nPasosExtraB);
     //////////////////////////////////////////////////////////////////
     //Imprimir nPasosExtraB
-    printf("\nNúmero de pasos extra: %d", nPasosExtraB);
+    printf("\nNúmero de pasos extra: %d\n", nPasosExtraB);
     //////////////////////////////////////////////////////////////////
 
     fclose(fp); //Cierro el archivo    

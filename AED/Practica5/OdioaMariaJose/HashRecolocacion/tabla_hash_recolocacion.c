@@ -98,7 +98,7 @@ int _PosicionInsertar(TablaHash t, char *cad, unsigned int tipoFH, unsigned int 
             ////////////////////////////////////////////////////////////////////
             //Incrementar en i la variable nPasosExtraI
             ////////////////////////////////////////////////////////////////////
-            *nPasosExtraI = i;
+            *nPasosExtraI += i;
             return posicion;
         }
         //Si el elemento a insertar ya estaba en la tabla
@@ -107,7 +107,7 @@ int _PosicionInsertar(TablaHash t, char *cad, unsigned int tipoFH, unsigned int 
             ////////////////////////////////////////////////////////////////////
             //Incrementar en i la variable nPasosExtraI
             ///////////////////////////////////////////////////////////////////
-            *nPasosExtraI = i;
+            *nPasosExtraI += i;
             return posicion;
         }
         *hayColisionI = 1;

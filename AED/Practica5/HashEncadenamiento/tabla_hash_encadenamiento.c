@@ -1,5 +1,4 @@
 #include "tabla_hash_encadenamiento.h"
-
 /* TABLA HASH CON ENCADENAMIENTO */
 
 /******* FUNCIONES HASH *******/
@@ -30,7 +29,7 @@ int InsertarHash(TablaHash *t, TIPOELEMENTO elemento, unsigned int tipoFH, unsig
     //Inicializo hayColision a cero
     int hayColision = 0;
     //Se produce colisión cuando la lista de la posición pos NO está vacía
-    if(!esVaciaLista((*t)[pos])){
+    if(esListaVacia((*t)[pos])){
         hayColision = 1;
     }
     ///////////////////////////////////////////////////////////////////////////////////
@@ -80,13 +79,14 @@ int EsMiembroHash(TablaHash t, char *clavebuscar, unsigned int tipoFH, unsigned 
         recuperarElementoLista(t[pos], p, &elemento);
         if (strcmp(clavebuscar, elemento.alias) == 0)
             encontrado = 1;
-        else
+        else{
             p = siguienteLista(t[pos], p);
             /////////////////////////////////////////////////////////////////////
             //UN PASO ADICIONAL PARA BUSCAR la clave DENTRO DE LA LISTA t[pos]
             //Incrementar nPasosExtraB
             /////////////////////////////////////////////////////////////////////
             (*nPasosExtraB)++;
+        }
     }
     return encontrado;
 }

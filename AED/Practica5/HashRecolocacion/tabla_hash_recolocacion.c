@@ -61,6 +61,7 @@ int _PosicionBuscar(TablaHash t, char *cad, unsigned int tipoFH, unsigned int K,
             ///////////////////////////////////////////////
             //incremento en i el nPasosExtraB
             ///////////////////////////////////////////////
+            *nPasosExtraB += i;
             return posicion;
         }
     }
