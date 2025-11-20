@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
     
     // Realizar el malloc de 100 bytes
     void *malloc1;
-    malloc1 = malloc(100);
+    malloc1 = malloc(1024*100);
 
     // Comprobar si el malloc ha sido exitoso
     if (malloc1 == NULL) {
@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
    
     // Realizar el segundo malloc
     void *malloc2;
-    malloc2 = malloc(50);
+    malloc2 = malloc(1024*200);
     
     if (malloc2 == NULL) {
         printf("Error en malloc\n");

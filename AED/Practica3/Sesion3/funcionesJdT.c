@@ -620,7 +620,6 @@ void _familiaNumerosaAVectorStruct(TABB arbol, int max, FAMILIANUMEROSA *familia
     _familiaNumerosaAVectorStruct(derAbb(arbol), max, familias, numFamilas, nombres); //derecha
 }
 
-//FALTA COMPROBAR QUE SON DE TIPO PERSONA
 void familiaNumerosa(TABB arbol){
     int max = 0;
     _buscarMayorFamilia(arbol, &max);

@@ -103,7 +103,7 @@ int cargar_tabla (char *filename, Ruta *rutas, int *num_rutas){
 }
 
 /*
- * Comprueba se unha dirección IP coincide con unha rede dada segundo o numero de bits do prefixo.
+ * Comproba se unha dirección IP coincide con unha rede dada segundo o numero de bits do prefixo.
  * Parámetros:
  *   ip: dirección IP destino (en orden de rede.
  *   red: dirección de rede (en orden de rede).
@@ -115,14 +115,13 @@ int comprobar_coincidencia_prefijo(uint32_t ip, uint32_t red, int length_prefijo
     uint32_t mascara;
 
     if (length_prefijo == 0){
-        return 1; //Cualquier IP coincide con unha rede /0 (red por defecto)
+        return 1; //Calquer IP coincide con unha rede /0
     }
 
-    //se crea la máscara, los length_prefijo bits mñas significativos tienen que estar a 1, el resto a 0
-    //mascara = htonl(~((1U << (32 - length_prefijo)) - 1));
-   mascara = htonl(~((1U << (32 - length_prefijo)) - 1));
+    //Crease a máscara, os length_prefijo bits máis significativos teñen que estar a 1, e o resto a 0
+    mascara = htonl(~((1U << (32 - length_prefijo)) - 1));
     
-    //Compara los bits del prefijo
+    //Compara os bits do prefixo
     return (ip & mascara) == (red & mascara);
 }
 
@@ -132,21 +131,21 @@ int comprobar_coincidencia_prefijo(uint32_t ip, uint32_t red, int length_prefijo
  *   ip_destino: dirección IP destino (struct in_addr).
  *   rutas: array de rutas dispoñibles.
  *   num_rutas: número de entradas válidas cargadas.
- *   mejor_interfaz: puntero onde se almacenará a interface seleccionada.
- *   mejor_prefijo: puntero onde se almacenará a lonxitude do prefixo seleccionado.
+ *   mejor_interfaz: punteiro onde se almacenará a interface seleccionada.
+ *   mejor_prefijo: punteiro onde se almacenará a lonxitude do prefixo seleccionado.
  * Retorno:
  *   0 sempre.
  */
 void encontrar_mejor_ruta(struct in_addr ip_destino, Ruta *rutas, int num_rutas, int *mejor_interfaz, int *mejor_prefijo) {
     *mejor_prefijo = -1; // Usa -1 para indicar "ningunha coincidencia atopada"
-    *mejor_interfaz = 0; // La interfaz por defecto según el enunciado
+    *mejor_interfaz = 0; // A interface por defecto
 
-    // Buscar la ruta con el prefijo más largo que coincida 
+    // Buscar a ruta co prefixo máis longoo que coincida 
     for (int i = 0; i < num_rutas; i++) {
         if (comprobar_coincidencia_prefijo(ip_destino.s_addr, rutas[i].direccion_red.s_addr, rutas[i].length_prefijo)) {
             
-            // Si la ruta actual que coincide tiene un prefijo más largo que la mejor que teníamos,
-            // esta pasa a ser la nueva mejor ruta.
+            // Se a ruta actual que coincide ten un prefixo máis longo que a mellor que tiñamos,
+            // esta pasa a ser a nova mellor ruta.
             if (rutas[i].length_prefijo > *mejor_prefijo) {
                 *mejor_prefijo = rutas[i].length_prefijo;
                 *mejor_interfaz = rutas[i].interfaz;
@@ -154,8 +153,8 @@ void encontrar_mejor_ruta(struct in_addr ip_destino, Ruta *rutas, int num_rutas,
         }
     }
     
-    // Si, tras recorrer todas las rutas, no se encontró ninguna coincidencia (mejor_prefijo sigue en -1),
-    // se asigna explícitamente el prefijo de la ruta por defecto (0).
+    // Se, tras recorrer todas as rutas, non se atopou ningunha coincidencia (mejor_prefijo sigue en -1),
+    // asígnase explícitamente o prefixo da ruta por defecto (0).
     if (*mejor_prefijo == -1) {
         *mejor_prefijo = 0;
     }

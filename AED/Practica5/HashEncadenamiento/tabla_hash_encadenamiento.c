@@ -29,7 +29,7 @@ int InsertarHash(TablaHash *t, TIPOELEMENTO elemento, unsigned int tipoFH, unsig
     //Inicializo hayColision a cero
     int hayColision = 0;
     //Se produce colisión cuando la lista de la posición pos NO está vacía
-    if(esListaVacia((*t)[pos])){
+    if(!esListaVacia((*t)[pos])){
         hayColision = 1;
     }
     ///////////////////////////////////////////////////////////////////////////////////

@@ -1,5 +1,0 @@
-White Walker|criatura|-|0|-|-|Loboda|-|Criatura magica del lejano norte
-Nymeria|lobo|Stark|0|-|Grey Wind,Lady,Summer,Shaggydog,Ghost|-|-|Lobo huargo companero de Arya Stark
-Rhaenyra Targaryen|persona|Targaryen|1|Viserys I Targaryen,Aemma Arryn|Baelon Targaryen|-|Laenor Velaryon,Daemon Targaryen|Heredera al Trono de Hierro, figura central en la Danza de los Dragones
-Viserys I Targaryen|persona|Targaryen|1|Jaehaerys I Targaryen,Alysanne Targaryen|Aemon Targaryen|-|Aemma Arryn,Alicent Hightower|Rey de los Siete Reinos
-Davos Seaworth|persona|-|0|-|-|-|-|Consejero leal conocido como el Caballero de la Cebolla

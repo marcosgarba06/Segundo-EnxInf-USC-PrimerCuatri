@@ -97,15 +97,13 @@ void insercionArchivo(FILE *fp, TablaHash *t, unsigned int tipoFH, unsigned int 
 //////////////////////////////////////////////////////////////////
 void busquedaArchivo(FILE *fp, TablaHash t, unsigned int tipoFH, unsigned int K, int* nPasosExtraB) {
     TIPOELEMENTO jugador;
-    int aux = 0;
     if (fp) {
         fscanf(fp, " %[^,] , %s , %s", jugador.nombre, jugador.alias, jugador.correo);
         while (!feof(fp)) {
             //////////////////////////////////////////////////////////////////////////////////////////
             //Añadir a BuscarHash() el parámetro por referencia nPasosExtraB
-            BuscarHash(t, jugador.alias, &jugador, tipoFH, K, &aux);
+            BuscarHash(t, jugador.alias, &jugador, tipoFH, K, nPasosExtraB);
             fscanf(fp, " %[^,] , %s , %s", jugador.nombre, jugador.alias, jugador.correo);
-            *nPasosExtraB += aux;
         }
     } else {
         printf("El archivo no ha podido abrirse\n");

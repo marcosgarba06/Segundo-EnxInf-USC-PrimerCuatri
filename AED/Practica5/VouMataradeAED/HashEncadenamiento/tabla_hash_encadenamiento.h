@@ -16,7 +16,7 @@
 #include <string.h>
 #include "lista.h"
 
-#define N 10000 /*DEFINIR NUMERO de entradas en la tabla.*/
+#define N 12303 /*DEFINIR NUMERO de entradas en la tabla.*/
 //El factor de carga es L=n/N, donde n=datos (8.000)
 //Se recomienda L<=0,5 para recolocación, es decir, N>=2n
 //Se recomienda L<=0,75 para encadenamiento, es decir, N>=4n/3

@@ -54,14 +54,14 @@ int _PosicionBuscar(TablaHash t, char *cad, unsigned int tipoFH, unsigned int K,
             ///////////////////////////////////////////////
             //incremento en i el nPasosExtraB 
             ///////////////////////////////////////////////
-            *nPasosExtraB = i;
+            *nPasosExtraB += i;
             return posicion;
         }
         if (!strcmp(t[posicion].alias, cad)) {//si encontré cad, terminé de buscar
             ///////////////////////////////////////////////
             //incremento en i el nPasosExtraB
             ///////////////////////////////////////////////
-            *nPasosExtraB = i;
+            *nPasosExtraB += i;
             return posicion;
         }
     }

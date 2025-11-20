@@ -93,11 +93,11 @@ int main(int argc, char** argv) {
 //////////////////////////////////////////////////////////////////
 void insercionArchivo(FILE *fp, TablaHash t, unsigned int tipoFH, unsigned int K, unsigned int tipoR, unsigned int a, int* nColisionesI, int* nPasosExtraI) {
     TIPOELEMENTO jugador;
-    int aux = 0;
     if (fp) {
         fscanf(fp, "%[^,] , %s , %s", jugador.nombre, jugador.alias, jugador.correo);
         while (!feof(fp)) {
-            //////////////////////////////////////////////////////////////////////////////////////////
+            int aux = 0;
+            ////////////////////////////////////////////////////////////////////////
             //Modificar la función InsertarHash para que devuelve: 1 si colisión, 0 en caso contrario
             //y acumular estos valores en nColisionesI
             //Añadir a InsertarHash parámetro nPasosExtraI por referencia
